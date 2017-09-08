@@ -32,14 +32,13 @@ public class Person4 {
      * @return the modified string
      */
     private String calc(String input) {
-        int index = 0;
-        for (char c : input.toCharArray()) {
-            byte[] charBytes = input.getBytes(StandardCharsets.US_ASCII);
-            c = input.charAt(charBytes[index] + 1);
-            index++;
-            input = input.replaceAll(input, String.valueOf(c));
+       String output = "";
+        //byte[] charBytes = input.getBytes(StandardCharsets.US_ASCII);
+        for (int i = 0; i < input.length(); i++) {
+            output = output + Character.toString((char) ((int) input.charAt(i) + 1));
         }
-        return input;
+
+        return output;
     }
 
     /**
