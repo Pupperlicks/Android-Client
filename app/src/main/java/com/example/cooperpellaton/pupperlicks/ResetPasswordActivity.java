@@ -14,16 +14,22 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
-/**
- * Created by Cooper Pellaton on 9/23/2017.
- */
 
+/**
+ * The reset password activity.
+ * If a user requests for their password to be reset we will email the information on file to them
+ * through Firebase.
+ */
 public class ResetPasswordActivity extends AppCompatActivity {
     private EditText inputEmail;
     private Button btnReset, btnBack;
     private FirebaseAuth auth;
     private ProgressBar progressBar;
 
+    /**
+     * Create the Firebase instance and email the user if the button is clicked.
+     * @param savedInstanceState The saved instance state.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

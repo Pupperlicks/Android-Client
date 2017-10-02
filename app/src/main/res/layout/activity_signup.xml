@@ -65,6 +65,13 @@
 
         </android.support.design.widget.TextInputLayout>
 
+        <CheckBox
+            android:id="@+id/adminSelector"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Administrator"
+            android:textColor="@color/colorPrimaryText" />
+
         <Button
             android:id="@+id/sign_up_button"
             style="?android:textAppearanceSmall"

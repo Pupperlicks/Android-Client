@@ -1,4 +1,5 @@
 package com.example.cooperpellaton.pupperlicks;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -6,25 +7,36 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 /**
  * Created by Cooper Pellaton on 9/23/2017.
+ * This is the signup class.
+ * It takes in all of the parameters from the signup view, calls Firebase auth to make a user.
+ * If the user creation is succesful we move to the next screen. Otherwise present a toast and do
+ * nothing.
  */
 
 public class SignupActivity extends AppCompatActivity {
     private EditText inputEmail, inputPassword;
     private Button btnSignIn, btnSignUp, btnResetPassword;
+    private CheckBox adminButton;
     private ProgressBar progressBar;
     private FirebaseAuth auth;
 
+    /**
+     * Create the user given the values from the view.
+     * @param savedInstanceState The saved instance state.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +51,7 @@ public class SignupActivity extends AppCompatActivity {
         inputPassword = (EditText) findViewById(R.id.password);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         btnResetPassword = (Button) findViewById(R.id.btn_reset_password);
+        adminButton = (CheckBox) findViewById(R.id.adminSelector);
 
         btnResetPassword.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,6 +95,15 @@ public class SignupActivity extends AppCompatActivity {
                         .addOnCompleteListener(SignupActivity.this, new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
+//                                If able to make a user AND if admin is checked then make the user an admin in Firebase.
+//                                Else make the user a user.
+                                if(adminButton.isChecked()) {
+                                    FirebaseAnalytics analytics = FirebaseAnalytics.getInstance(pupperlicks.getContext());
+                                    analytics.setUserProperty("admin",  "true");
+                                } else if(!adminButton.isChecked()) {
+                                    FirebaseAnalytics analytics = FirebaseAnalytics.getInstance(pupperlicks.getContext());
+                                    analytics.setUserProperty("admin",  "false");
+                                }
                                 Toast.makeText(SignupActivity.this, "createUserWithEmail:onComplete:" + task.isSuccessful(), Toast.LENGTH_SHORT).show();
                                 progressBar.setVisibility(View.GONE);
                                 // If sign in fails, display a message to the user. If sign in succeeds
@@ -101,6 +123,9 @@ public class SignupActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Resume if paused.
+     */
     @Override
     protected void onResume() {
         super.onResume();

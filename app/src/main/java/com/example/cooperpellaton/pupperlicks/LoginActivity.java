@@ -18,15 +18,19 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 /**
- * Created by Cooper Pellaton on 9/23/2017.
+ * The login activity. Allows a user to login.
  */
-
 public class LoginActivity extends AppCompatActivity {
     private EditText inputEmail, inputPassword;
     private FirebaseAuth auth;
     private ProgressBar progressBar;
     private Button btnSignup, btnLogin, btnReset;
 
+    /**
+     * Take the fields from the login view, and call the Firebase instance to check if they're a
+     * registered user. Fail or success determined by user value in DB.
+     * @param savedInstanceState Saved instance state.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
