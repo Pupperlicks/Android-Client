@@ -8,8 +8,7 @@ import android.widget.TextView;
  * This displays the details of a rat sighting
  * Created by Ronnie on 10/10/2017.
  */
-
-class DetailsActivity extends AppCompatActivity {
+public class DetailsActivity extends AppCompatActivity {
     SightingDetails details;
 
     /**
@@ -22,7 +21,7 @@ class DetailsActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.details_view);
         TextView detailsView = (TextView) findViewById(R.id.details_text_view);

@@ -4,7 +4,7 @@ package com.example.cooperpellaton.pupperlicks;
  * Created by Ronnie on 10/10/2017.
  *
  */
-class SightingDetails {
+public class SightingDetails {
     private String key;
     private String date;
     private String location;
@@ -20,7 +20,7 @@ class SightingDetails {
      *
      * @param details the details pertaining to the sighting
      */
-    SightingDetails(String[] details) {
+    public SightingDetails(String[] details) {
         if (details.length != 9) {
             throw new IllegalArgumentException("String[] must be of length 9.");
         }
