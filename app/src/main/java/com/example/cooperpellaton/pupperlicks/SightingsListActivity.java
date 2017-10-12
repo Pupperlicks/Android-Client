@@ -1,15 +1,23 @@
 package com.example.cooperpellaton.pupperlicks;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Adapter;
+import android.widget.ListView;
 
+import com.firebase.ui.database.FirebaseListAdapter;
+import com.firebase.ui.database.FirebaseListOptions;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.firebase_core.*;
-import com.google.firebase.database.*; // TODO: only import what's needed
+import com.google.firebase.database.*;
+import com.firebase.ui.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,36 +29,37 @@ import java.util.List;
 
 public class SightingsListActivity extends AppCompatActivity {
 
-//   private DatabaseReference database;
-    private Firebase mFirebaseRef;
+    private ListView mListView;
+    private DatabaseReference mDatabase;
+    private Adapter mAdapter;
+    Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sightings_list);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        mListView = (ListView) findViewById(R.id.ListView);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        Query query = FirebaseDatabase.getInstance()
+                .getReference()
+                .child("rats")
+                .limitToLast(50);
+
+        FirebaseListOptions<RatSighting> options = new FirebaseListOptions.Builder<RatSighting>()
+                .setQuery(query, RatSighting.class)
+                .build();
+
+        FirebaseListAdapter<RatSighting> adapter = new FirebaseListAdapter<RatSighting>(options) {
             @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-
-                // TODO: should launch add sighting activity ( > M6)
+            protected void populateView(View v, RatSighting model, int position) {
+                LayoutInflater inflater =
+                        (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                View newView = inflater.inflate(R.layout.sightings_list, (ListView)v, true);
+                ListView castV = (ListView) v;
+                castV.addView(newView);
             }
-        });
+        };
 
-        // TODO: get ratSighting objects by calling firebase
-        // set up Firebase database reference
 
-        // TODO: set up list item object/thing
-        List<SightingDetails> = new ArrayList<>(); // set up container for entries
 
-        // TODO: iterate through objects and add to list view
-        // retrieve entries from server
-
-        // TODO: hood up list view items to go to corresponding detailView
     }
 }

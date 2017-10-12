@@ -27,7 +27,7 @@ import com.google.firebase.auth.FirebaseUser;
 public class MainActivity extends AppCompatActivity {
 
     private Button btnChangeEmail, btnChangePassword, btnSendResetEmail, btnRemoveUser,
-            changeEmail, changePassword, sendEmail, remove, signOut;
+            changeEmail, changePassword, sendEmail, remove, signOut, btnShowListRats;
 
     private EditText oldEmail, newEmail, password, newPassword;
     private ProgressBar progressBar;
@@ -62,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
+        btnShowListRats = (Button) findViewById(R.id.listbtn);
         btnChangeEmail = (Button) findViewById(R.id.change_email_button);
         btnChangePassword = (Button) findViewById(R.id.change_password_button);
         btnSendResetEmail = (Button) findViewById(R.id.sending_pass_reset_button);
@@ -244,6 +245,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 signOut();
+            }
+        });
+
+//        If the user wants to see rats, we'll show them rats!
+        btnShowListRats.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                startActivity(new Intent(MainActivity.this, SightingsListActivity.class));
+                finish();
             }
         });
 
