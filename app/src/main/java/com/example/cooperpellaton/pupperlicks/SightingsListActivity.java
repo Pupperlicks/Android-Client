@@ -7,17 +7,24 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Adapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.firebase.ui.database.FirebaseListOptions;
 import com.google.firebase.FirebaseApp;
-import com.google.firebase.firebase_core.*;
+//import com.google.firebase.firebase_core.*;
 import com.google.firebase.database.*;
 import com.firebase.ui.*;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.BufferedReader;
+import java.io.IOException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,32 +41,46 @@ public class SightingsListActivity extends AppCompatActivity {
     private Adapter mAdapter;
     Context context;
 
+
+    private List<String[]> readCVSFromAssetFolder(){
+        List<String[]> csvLine = new ArrayList<>();
+        String[] content = null;
+        try {
+            InputStream inputStream = getAssets().open("Rat_Sightings.csv");
+            BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
+            String line = "";
+            while((line = br.readLine()) != null){
+                content = line.split(",");
+                csvLine.add(content);
+            }
+            br.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            Log.i("Error", e.toString());
+        }
+        return csvLine;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        mDatabase = FirebaseDatabase.getInstance().getReference();
-        mListView = (ListView) findViewById(R.id.ListView);
-
-        Query query = FirebaseDatabase.getInstance()
-                .getReference()
-                .child("rats")
-                .limitToLast(50);
-
-        FirebaseListOptions<RatSighting> options = new FirebaseListOptions.Builder<RatSighting>()
-                .setQuery(query, RatSighting.class)
-                .build();
-
-        FirebaseListAdapter<RatSighting> adapter = new FirebaseListAdapter<RatSighting>(options) {
-            @Override
-            protected void populateView(View v, RatSighting model, int position) {
-                LayoutInflater inflater =
-                        (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                View newView = inflater.inflate(R.layout.sightings_list, (ListView)v, true);
-                ListView castV = (ListView) v;
-                castV.addView(newView);
-            }
-        };
-
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.main_sightings_list);
+        List<String[]> csvContent = readCVSFromAssetFolder();
+        Log.e("CSVContent", csvContent.toString());
+        LinearLayout listView = findViewById(R.id.linlay);
+        for (String[] array: csvContent) {
+            TextView t = new TextView(this);
+            t.setText(csvContent.get(0) + ":" + csvContent.get(1));
+            t.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+//                    set the information for the detail view here
+                }
+            });
+            listView.addView(t);
+        }
 
 
     }
+
 }
