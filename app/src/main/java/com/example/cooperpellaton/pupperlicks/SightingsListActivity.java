@@ -75,6 +75,11 @@ public class SightingsListActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
 //                    set the information for the detail view here
+                    Intent intent = new Intent(SightingsListActivity.this, DetailsActivity.class);
+                    Bundle b = new Bundle();
+                    b.putStringArray("details", array);
+                    intent.putExtras(b);
+                    startActivity(intent);
                 }
             });
             listView.addView(t);
