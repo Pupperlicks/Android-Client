@@ -47,7 +47,7 @@ public class SightingsListActivity extends AppCompatActivity {
         List<String[]> csvLine = new ArrayList<>();
         String[] content;
         try {
-            InputStream inputStream = getAssets().open("Rat_Sightings.csv");
+            InputStream inputStream = getAssets().open("Rat_Sightings_less.csv");
             BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
             String line; // sets up empty string
             while((line = br.readLine()) != null){
