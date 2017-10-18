@@ -1,6 +1,7 @@
 package com.example.cooperpellaton.pupperlicks;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -44,11 +45,11 @@ public class SightingsListActivity extends AppCompatActivity {
 
     private List<String[]> readCVSFromAssetFolder(){
         List<String[]> csvLine = new ArrayList<>();
-        String[] content = null;
+        String[] content;
         try {
             InputStream inputStream = getAssets().open("Rat_Sightings.csv");
             BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
-            String line = "";
+            String line; // sets up empty string
             while((line = br.readLine()) != null){
                 content = line.split(",");
                 csvLine.add(content);
@@ -68,9 +69,10 @@ public class SightingsListActivity extends AppCompatActivity {
         List<String[]> csvContent = readCVSFromAssetFolder();
         Log.e("CSVContent", csvContent.toString());
         LinearLayout listView = findViewById(R.id.linlay);
-        for (String[] array: csvContent) {
+        for (final String[] array: csvContent) {
             TextView t = new TextView(this);
-            t.setText(csvContent.get(0) + ":" + csvContent.get(1));
+            // TODO: this should not be calling toString on the raw array objects
+            t.setText(csvContent.get(0).toString() + ":" + csvContent.get(1).toString());
             t.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
