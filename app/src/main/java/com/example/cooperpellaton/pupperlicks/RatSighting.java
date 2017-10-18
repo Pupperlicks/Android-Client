@@ -1,11 +1,13 @@
 package com.example.cooperpellaton.pupperlicks;
 
+import java.io.Serializable;
+
 /**
  * Created by Cooper Pellaton on 10/11/2017.
  * Model object for a single rat sighting
  */
 
-public class RatSighting {
+public class RatSighting implements Serializable {
     // minimum fields that need to be handled:
     private String uniqueKey;
     private String createdDate;
