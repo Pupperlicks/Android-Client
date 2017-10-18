@@ -15,19 +15,24 @@ public class DetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.details_view);
+
         Bundle b = getIntent().getExtras(); // Not entirely sure how to get the catalyst intent
-        String[] details;
-        TextView detailsView = (TextView) findViewById(R.id.details_text_view);
+        RatSighting sighting;
+
+        TextView detailsView = findViewById(R.id.details_text_view);
+
         if (savedInstanceState != null) {
-            details = b.getStringArray("details");
-            detailsView.setText("Unique Key: " + details[0] + "\nCreated Date: " + details[1]
-                    + "\nLocation Type: " + details[2]
-                    + "\nIncident Zip: " + details[3]
-                    + "\nIncident Address: " + details[4]
-                    + "\nCity: " + details[5]
-                    + "\nBorough: " + details[6]
-                    + "\nLatitude: " + details[7]
-                    + "\nLongitude: " + details[8]
+            // retrieve the sighting from the bundle
+            sighting = (RatSighting) b.getSerializable("details"); // de-serialize the object
+            detailsView.setText("Unique Key: "
+                    + "\nCreated Date: " + sighting.getCreatedDate()
+                    + "\nLocation Type: " + sighting.getLocationType()
+                    + "\nIncident Zip: " + sighting.getIncidentZip()
+                    + "\nIncident Address: " + sighting.getIncidentAddress()
+                    + "\nCity: " + sighting.getCity()
+                    + "\nBorough: " + sighting.getBorough()
+                    + "\nLatitude: " + sighting.getLatitude()
+                    + "\nLongitude: " + sighting.getLongitude()
             );
         } else {
             detailsView.setText("Sighting not Found.");
