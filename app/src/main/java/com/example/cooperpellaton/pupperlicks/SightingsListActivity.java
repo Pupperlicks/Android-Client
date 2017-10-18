@@ -68,7 +68,7 @@ public class SightingsListActivity extends AppCompatActivity {
         List<String[]> csvContent = readCVSFromAssetFolder();
         Log.e("CSVContent", csvContent.toString());
         LinearLayout listView = findViewById(R.id.linlay);
-        for (String[] array: csvContent) {
+        for (final String[] array: csvContent) {
             TextView t = new TextView(this);
             t.setText(csvContent.get(0) + ":" + csvContent.get(1));
             t.setOnClickListener(new View.OnClickListener() {
