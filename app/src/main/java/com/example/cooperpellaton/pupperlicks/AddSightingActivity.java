@@ -36,7 +36,7 @@ public class AddSightingActivity extends Activity {
 
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void OnClick(View v) {
+            public void onClick(View v) {
                 ServerPortal sp = new ServerPortal();
                 // build rat sighting object and send server add request
                 sp.addReport(new RatSighting(
