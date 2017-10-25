@@ -10,7 +10,7 @@
 
     https://developers.google.com/maps/documentation/android/start#get-key
     -->
-    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">
-        AIzaSyBqAZuGemsexbS1h7g34hvaK49F7fcpl78
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="true">
+        AIzaSyCK9t8vzT2oV9Q1IyjFtI75E00OJHd4kjc
     </string>
 </resources>
