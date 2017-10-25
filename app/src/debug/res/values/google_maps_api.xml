@@ -1,0 +1,16 @@
+<resources>
+    <!--
+    https://console.developers.google.com/flows/enableapi?apiid=maps_android_backend&keyType=CLIENT_SIDE_ANDROID&r=1D:0D:7A:66:AF:8C:82:C3:46:AF:E1:84:02:52:B0:AA:99:CB:81:FE%3Bcom.example.cooperpellaton.pupperlicks
+
+    Package name:
+    1D:0D:7A:66:AF:8C:82:C3:46:AF:E1:84:02:52:B0:AA:99:CB:81:FE
+
+    SHA-1 certificate fingerprint:
+    1D:0D:7A:66:AF:8C:82:C3:46:AF:E1:84:02:52:B0:AA:99:CB:81:FE
+
+    https://developers.google.com/maps/documentation/android/start#get-key
+    -->
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">
+        AIzaSyBqAZuGemsexbS1h7g34hvaK49F7fcpl78
+    </string>
+</resources>
