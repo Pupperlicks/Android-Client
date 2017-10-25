@@ -27,7 +27,7 @@ import com.google.firebase.auth.FirebaseUser;
 public class MainActivity extends AppCompatActivity {
 
     private Button btnChangeEmail, btnChangePassword, btnSendResetEmail, btnRemoveUser,
-            changeEmail, changePassword, sendEmail, remove, signOut, btnShowListRats;
+            changeEmail, changePassword, sendEmail, remove, signOut, btnShowListRats, btnShowMap;
 
     private EditText oldEmail, newEmail, password, newPassword;
     private ProgressBar progressBar;
@@ -63,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
         };
 
         btnShowListRats = (Button) findViewById(R.id.listbtn);
+        btnShowMap = (Button) findViewById(R.id.mapbtn);
         btnChangeEmail = (Button) findViewById(R.id.change_email_button);
         btnChangePassword = (Button) findViewById(R.id.change_password_button);
         btnSendResetEmail = (Button) findViewById(R.id.sending_pass_reset_button);
@@ -257,6 +258,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        btnShowMap.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                startActivity(new Intent(MainActivity.this, MapsActivity.class));
+                finish();
+            }
+        });
     }
 
     //sign out method

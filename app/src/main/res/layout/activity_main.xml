@@ -85,6 +85,16 @@
             tools:text="View Rat Sightings" />
 
         <Button
+            android:id="@+id/mapbtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@color/colorPrimaryDark"
+            android:text="View Map"
+            android:textColor="@color/colorPrimaryText"
+            tools:text="View Sightings Map" />
+
+        <Button
             android:id="@+id/changeEmail"
             style="?android:textAppearanceSmall"
             android:layout_width="wrap_content"
