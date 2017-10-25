@@ -10,16 +10,26 @@ import android.widget.Adapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.content.Context;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.app.Activity;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
-//import com.google.firebase.firebase_core.*;
-import com.google.firebase.database.*;
 
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.BufferedReader;
-import java.io.IOException;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -29,91 +39,81 @@ import java.util.List;
 
 public class SightingsListActivity extends AppCompatActivity {
 
-    private ListView mListView;
-    private DatabaseReference mDatabase;
-    private Adapter mAdapter;
-    Context context;
-
-
-    /**
-     * @return a list string arrays that represent each sighting entry
-     */
-    private List<RatSighting> readCSVFromAssetFolder(){
-
-        List<RatSighting> entries = new ArrayList<>();
-        String[] rawSightingData;
-
-        try {
-            // open the file
-            InputStream inputStream = getAssets().open("Rat_Sightings_less.csv");
-            // set up our file reader
-            BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
-
-            String line; // temp string that we'll read into
-
-            // while there are still entries to read
-            while ((line = br.readLine()) != null){
-                // TODO: skip over first (header) line
-                rawSightingData = line.split(","); // splits the line into an array of strings
-
-                entries.add(CSVToRatSighting(rawSightingData)); // add the array of strings to our main list
-            }
-
-            br.close(); // finally, close the buffered reader
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            Log.i("Error", e.toString());
-        }
-        return entries; // return the entry
-    }
-
-    private RatSighting CSVToRatSighting(String[] rawSightingData) {
-        return new RatSighting(
-            rawSightingData[0], // uniqueKey
-            rawSightingData[1], // createdDate
-            rawSightingData[2], // locationType
-            rawSightingData[3], // incidentZip
-            rawSightingData[4], // incidentAddress
-            rawSightingData[5], // city
-            rawSightingData[6], // borough
-            rawSightingData[7], // latitude
-            rawSightingData[8]); // longitude
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_sightings_list);
+    }
 
-        List<RatSighting> sightings = readCSVFromAssetFolder();
+    @Override
+    protected void onResume() {
+        super.onResume();
+        new SightingsTask().execute(this);
+    }
 
-        Log.e("CSVContent", sightings.toString());
+    public class SightingsTask extends AsyncTask<Context, Context, Context> {
 
-        // TODO: change to listview layout
-        LinearLayout listView = findViewById(R.id.linlay);
+        List<RatSighting> rats;
 
-        for (final RatSighting sighting: sightings) {
+        @Override
+        protected Context doInBackground(Context... contexts) {
 
-            TextView t = new TextView(this);
+            JSONArray ratsJSON = ServerPortal.getFifty();
+            rats = new LinkedList<>();
 
-            // TODO: this should not be calling toString on the raw array objects
-            t.setText(sighting.getCreatedDate() + ":" + sighting.getUniqueKey());
+            try {
+                Log.e("TASK", ratsJSON.toString());
+                for (int i = 0; i < ratsJSON.length(); i++) {
 
-            t.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-//                    set the information for the detail view here
-                    Intent intent = new Intent(SightingsListActivity.this, DetailsActivity.class);
-                    Bundle b = new Bundle();
-                    b.putSerializable("details", sighting);
-                    intent.putExtras(b);
-                    startActivity(intent);
+                    JSONObject task = ratsJSON.getJSONObject(i);
+                    Log.e("TASK", task.toString());
+                    rats.add(new RatSighting(
+                            task.getString("unique_key"),
+                            task.getString("created_date"),
+                            task.getString("location_type"),
+                            task.getString("incident_zip"),
+                            task.getString("incident_address"),
+                            task.getString("city"),
+                            task.getString("borough"),
+                            task.getString("latitude"),
+                            task.getString("longitude")
+                    ));
                 }
-            });
-            listView.addView(t);
+
+                Log.e("SIGHTINGS", "Rat list: " + rats.size());
+
+            } catch (JSONException ignored) {
+                Log.e("INFO", "Problem parsing info: " + ignored.toString());
+            }
+            return contexts[0];
         }
 
+        @Override
+        protected void onPostExecute(final Context context) {
+
+            LinearLayout listView = (LinearLayout) findViewById(R.id.linlay);
+            listView.removeAllViews();
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(
+                    Context.LAYOUT_INFLATER_SERVICE );
+            for (final RatSighting sighting: rats) {
+                TextView t = new TextView(context);
+
+                t.setText(sighting.getCreatedDate() + ":" + sighting.getUniqueKey());
+
+                t.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        // set the information for the detail view here
+                        Intent intent = new Intent(SightingsListActivity.this, DetailsActivity.class);
+                        Bundle b = new Bundle();
+                        b.putSerializable("details", sighting);
+                        intent.putExtras(b);
+                        startActivity(intent);
+                    }
+                });
+                listView.addView(t);
+            }
+        }
 
     }
 
