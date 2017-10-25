@@ -21,7 +21,7 @@ public class DetailsActivity extends AppCompatActivity {
 
         TextView detailsView = findViewById(R.id.details_text_view);
 
-        if (savedInstanceState != null) {
+        if (b != null) {
             // retrieve the sighting from the bundle
             sighting = (RatSighting) b.getSerializable("details"); // de-serialize the object
             detailsView.setText("Unique Key: "
