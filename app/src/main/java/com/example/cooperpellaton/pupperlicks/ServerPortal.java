@@ -7,9 +7,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 
 
@@ -55,4 +61,91 @@ public class ServerPortal {
         return new JSONArray();
     }
 
+    public static void addReport(RatSighting sighting) {
+            MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+
+            // create map to temporarily store the data
+            Map<String, String> params = new HashMap<String, String>();
+
+            // convert RatSighting object fields to map which can be converted to JSON
+            params.put("intersection_street_1", "");
+            params.put("school_name", "");
+            params.put("park_borough", "");
+            params.put("borough", sighting.getBorough());
+            params.put("intersection_street_2", "");
+            params.put("bridge_highway_segment", "");
+            params.put("school_city", "");
+            params.put("descriptor", "");
+            params.put("school_zip", "");
+            params.put("complaint_type", "");
+            params.put("incident_address", sighting.getIncidentAddress());
+            params.put("due_date", "");
+            params.put("vehicle_type", "");
+            params.put("location_type", "");
+            params.put("incident_zip", sighting.getIncidentZip());
+            params.put("street_name", "");
+            params.put("y_coord", "");
+            params.put("agency_name", "");
+            params.put("cross_street_1", "");
+            params.put("school_region", "");
+            params.put("school_or_citywide_complaint", "");
+            params.put("garage_lot_name", "");
+            params.put("resolution", "");
+            params.put("school_state", "");
+            params.put("school_number", "");
+            params.put("taxi_company", "");
+            params.put("facility_type", "");
+            params.put("landmark", "");
+            params.put("community_board", "");
+            params.put("school_phone_number", "");
+            params.put("cross_street_2", "");
+            params.put("agency", "");
+            params.put("road_ramp", "");
+            params.put("ferry_direction", "");
+            params.put("taxi_pick_up_location", "");
+            params.put("status", "");
+            params.put("x_coord", "");
+            params.put("city", sighting.getCity());
+            params.put("unique_key", sighting.getUniqueKey());
+            params.put("latitude", sighting.getLatitude());
+            params.put("location",
+                    "(" + sighting.getLatitude() + ", " + sighting.getLongitude() + ")");
+            params.put("address_type", "");
+            params.put("bridge_highway_name", "");
+            params.put("longitude", sighting.getLongitude());
+            params.put("created_date", sighting.getCreatedDate());
+            params.put("ferry_terminal_name", "");
+            params.put("school_address", "");
+            params.put("school_not_found", "");
+            params.put("school_code", "");
+            params.put("park_facility_name", "");
+            params.put("bridge_highway_direction", "");
+
+            OkHttpClient client = new OkHttpClient();
+
+            JSONObject outgoing = new JSONObject(params);
+
+            RequestBody body = RequestBody.create(JSON, outgoing.toString());
+
+
+            Request request = new Request.Builder()
+                    .url(HOST + SIGHTINGS)
+                    .post(body) // special sauce to make this a POST request
+                    .addHeader("content-type", "application/json; charset=utf-8")
+                    .build();
+
+            // make the request
+            client.newCall(request).enqueue(new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    Log.e("response", call.request().body().toString());
+
+                }
+
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    Log.e("response", response.body().string());
+                }
+            });
+    }
 }

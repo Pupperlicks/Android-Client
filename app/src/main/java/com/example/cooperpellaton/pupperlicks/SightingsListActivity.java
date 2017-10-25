@@ -3,6 +3,7 @@ package com.example.cooperpellaton.pupperlicks;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -113,6 +114,19 @@ public class SightingsListActivity extends AppCompatActivity {
                 });
                 listView.addView(t);
             }
+
+            // instantiate floating action button
+            FloatingActionButton fab = new FloatingActionButton(context);
+
+            // set listener
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //
+                    Intent intent = new Intent(SightingsListActivity.this, AddSightingActivity.class);
+                    startActivity(intent);
+                }
+            });
         }
 
     }

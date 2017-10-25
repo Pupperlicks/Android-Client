@@ -52,6 +52,14 @@
         <activity
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps" />
+        <activity
+            android:name=".AddSightingActivity"
+            android:label="@string/title_activity_add_sighting"
+            android:parentActivityName=".SightingsListActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.cooperpellaton.pupperlicks.SightingsListActivity" />
+        </activity>
     </application>
 
 </manifest>
