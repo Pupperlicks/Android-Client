@@ -122,4 +122,5 @@
     </string>
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_add_sighting">AddSightingActivity</string>
+    <string name="title_activity_sightings_list2">SightingsListActivity2</string>
 </resources>
