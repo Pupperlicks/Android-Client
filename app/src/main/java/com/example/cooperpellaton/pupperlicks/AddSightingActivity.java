@@ -3,7 +3,6 @@ package com.example.cooperpellaton.pupperlicks;
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -35,10 +34,9 @@ public class AddSightingActivity extends Activity {
         // set up button
         btnSave = (Button) findViewById(R.id.button2);
 
-        btnSave.setOnClickListener(new OnClickListener() {
-
+        btnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
             public void onClick(View v) {
-
                 ServerPortal sp = new ServerPortal();
                 // build rat sighting object and send server add request
                 sp.addReport(new RatSighting(

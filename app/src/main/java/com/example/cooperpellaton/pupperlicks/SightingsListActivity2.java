@@ -2,52 +2,49 @@ package com.example.cooperpellaton.pupperlicks;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.view.View;
-import android.widget.Adapter;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.LinearLayout;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
-
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * Activity designed to retrieve rat sightings from the backend and display them as a list to the
- * user.
- */
 
-public class SightingsListActivity extends AppCompatActivity {
+public class SightingsListActivity2 extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main_sightings_list);
+        setContentView(R.layout.activity_sightings_list2);
+        // getActionBar().setDisplayHomeAsUpEnabled(true);
+
+        // set up ToolBar
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar2);
+        setSupportActionBar(toolbar);
+
+        // set up Floating Action Button
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.floatingActionButton2);
+
+        // set up ListView
+        ListView listView = (ListView) findViewById(R.id.sightingsList);
     }
 
     @Override
-    protected void onResume() { // when activity is visible again
+    protected void OnResume() {
         super.onResume();
         new SightingsTask().execute(this); // create SightingsTask() class
     }
@@ -66,8 +63,11 @@ public class SightingsListActivity extends AppCompatActivity {
                 Log.e("TASK", ratsJSON.toString());
                 for (int i = 0; i < ratsJSON.length(); i++) {
 
+                    // extract JSON object from array of results
                     JSONObject task = ratsJSON.getJSONObject(i);
                     Log.e("TASK", task.toString());
+
+                    // construct RatSighting object from retrieved JSON object
                     rats.add(new RatSighting(
                             task.getString("unique_key"),
                             task.getString("created_date"),
@@ -92,10 +92,16 @@ public class SightingsListActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(final Context context) {
 
-            LinearLayout listView = (LinearLayout) findViewById(R.id.linlay);
-            listView.removeAllViews();
+//            LinearLayout listView = (LinearLayout) findViewById(R.id.linlay);
+            ListView listView = (ListView) findViewById(R.id.sightingsList);
+
+            listView.removeAllViews(); // TODO: ask why this is needed
+
+            ListAdapter listAdapter = new ListAdapter() {
+            }
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(
                     Context.LAYOUT_INFLATER_SERVICE );
+
             for (final RatSighting sighting: rats) {
                 TextView t = new TextView(context);
 
@@ -130,5 +136,4 @@ public class SightingsListActivity extends AppCompatActivity {
         }
 
     }
-
 }
