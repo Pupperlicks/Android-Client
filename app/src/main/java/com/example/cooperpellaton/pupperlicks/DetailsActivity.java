@@ -24,7 +24,7 @@ public class DetailsActivity extends AppCompatActivity {
         if (b != null) {
             // retrieve the sighting from the bundle
             sighting = (RatSighting) b.getSerializable("details"); // de-serialize the object
-            detailsView.setText("Unique Key: "
+            detailsView.setText("Unique Key: " + sighting.getUniqueKey()
                     + "\nCreated Date: " + sighting.getCreatedDate()
                     + "\nLocation Type: " + sighting.getLocationType()
                     + "\nIncident Zip: " + sighting.getIncidentZip()
