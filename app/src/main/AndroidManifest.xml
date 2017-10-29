@@ -18,7 +18,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
@@ -59,6 +59,14 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.cooperpellaton.pupperlicks.SightingsListActivity" />
+        </activity>
+        <activity
+            android:name=".SightingsListActivity2"
+            android:label="@string/title_activity_sightings_list2"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.cooperpellaton.pupperlicks.MainActivity" />
         </activity>
     </application>
 
