@@ -1,13 +1,18 @@
 package com.example.cooperpellaton.pupperlicks;
 
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Adapter;
+import android.widget.Button;
+import android.widget.DatePicker;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -27,13 +32,16 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, OnMarkerClickListener {
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, OnMarkerClickListener, DatePickerDialog.OnDateSetListener {
 
     private GoogleMap mMap;
-    private DatabaseReference mDatabase;
-    private Adapter mAdapter;
+//    private DatabaseReference mDatabase;
+//    private Adapter mAdapter;
     private HashMap<String, RatSighting> sightings;
-    Context context;
+    private Button selectDateBtn;
+    private List dates;
+//    private DatePickerDialog datePickerDialog;
+//    Context context;
 
 
     @Override
@@ -46,6 +54,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         new MapSightingsTask().execute(this);
+        selectDateBtn = (Button) findViewById(R.id.select_date_btn);
+        selectDateBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dates = new LinkedList();
+                DialogFragment newFragment1 = new DatePickerFragment();
+                newFragment1.show(getSupportFragmentManager(), "startDatePicker");
+                DialogFragment newFragment2 = new DatePickerFragment();
+                newFragment2.show(getSupportFragmentManager(), "endDatePicker");
+            };
+        });
+    }
+    public void onDateSet(DatePicker view, int year, int month, int day) {
+        String date = new String(month + "/" + day + "/" + year);
     }
 
 
@@ -129,5 +151,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // for the default behavior to occur (which is for the camera to move such that the
         // marker is centered and for the marker's info window to open, if it has one).
         return false;
+    }
+
+
+
+    public static class DatePickerFragment extends DialogFragment
+            implements DatePickerDialog.OnDateSetListener {
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            return new DatePickerDialog(getActivity(), this, 2017, 0, 1);
+        }
+
+        public void onDateSet(DatePicker view, int year, int month, int day) {
+
+        }
     }
 }

@@ -16,7 +16,7 @@ public class DetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.details_view);
 
-        Bundle b = getIntent().getExtras(); // Not entirely sure how to get the catalyst intent
+        Bundle b = getIntent().getExtras();
         RatSighting sighting;
 
         TextView detailsView = findViewById(R.id.details_text_view);
