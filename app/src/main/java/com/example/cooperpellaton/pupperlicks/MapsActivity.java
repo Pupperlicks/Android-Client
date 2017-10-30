@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.Adapter;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -27,6 +26,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -35,8 +37,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleMap mMap;
     private DatabaseReference mDatabase;
     private Adapter mAdapter;
-    private HashMap<String, LinkedList<RatSighting>> sightings;
-    private LinkedList dates;
+    private HashMap<Date, LinkedList<RatSighting>> sightings;
+    private LinkedList chosenDates;
     private Button selectDateBtn;
     Context context;
 
@@ -45,7 +47,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-        sightings = new HashMap<String, LinkedList<RatSighting>>();
+        sightings = new HashMap<Date, LinkedList<RatSighting>>();
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -54,7 +56,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         selectDateBtn = (Button) findViewById(R.id.select_date_btn);
     }
     public void onDateSet(DatePicker view, int year, int month, int day) {
-        dates.add(new String(month + "/" + day + "/" + year));
+        chosenDates.add(new Date(year, month, day));
     }
 
 
@@ -99,12 +101,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         protected void onPostExecute(final Context context) {
             GoogleMap mMap = MapsActivity.this.mMap;
             Marker ratMarker;
+            DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
             for (final RatSighting sighting: this.rats) {
-                if (!MapsActivity.this.sightings.containsKey(sighting.getCreatedDate())) {
-                    LinkedList<RatSighting> date = new LinkedList<>();
-                    MapsActivity.this.sightings.put(sighting.getCreatedDate(), date);
+                try {
+                    Date date = format.parse(sighting.getCreatedDate());
+                    if (!MapsActivity.this.sightings.containsKey(date)) {
+                        LinkedList<RatSighting> dateList = new LinkedList<>();
+                        MapsActivity.this.sightings.put(date, dateList);
+                    }
+                    MapsActivity.this.sightings.get(date).add(sighting);
+                } catch (java.text.ParseException e) {
+                    Log.e("INFO", "Problem parsing info: " + sighting.getCreatedDate());
                 }
-                MapsActivity.this.sightings.get(sighting.getCreatedDate()).add(sighting);
 
                 LatLng rat = new LatLng(Double.parseDouble(sighting.getLatitude()), Double.parseDouble(sighting.getLongitude()));
                 ratMarker = mMap.addMarker(new MarkerOptions().position(rat).title(sighting.getUniqueKey()));
@@ -115,7 +123,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             selectDateBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    dates = new LinkedList();
+                    MapsActivity.this.chosenDates = new LinkedList();
                     DatePickerDialog startDay = new DatePickerDialog(context, MapsActivity.this, 2017, 0, 1);
                     startDay.show();
                     DatePickerDialog endDay = new DatePickerDialog(context, MapsActivity.this, 2017, 0, 1);
