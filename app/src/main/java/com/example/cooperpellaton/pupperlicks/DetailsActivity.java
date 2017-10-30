@@ -16,7 +16,7 @@ public class DetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.details_view);
 
-        Bundle b = getIntent().getExtras(); // Not entirely sure how to get the catalyst intent
+        Bundle b = getIntent().getExtras();
         RatSighting sighting;
 
         TextView detailsView = findViewById(R.id.details_text_view);
@@ -24,7 +24,7 @@ public class DetailsActivity extends AppCompatActivity {
         if (b != null) {
             // retrieve the sighting from the bundle
             sighting = (RatSighting) b.getSerializable("details"); // de-serialize the object
-            detailsView.setText("Unique Key: "
+            detailsView.setText("Unique Key: " + sighting.getUniqueKey()
                     + "\nCreated Date: " + sighting.getCreatedDate()
                     + "\nLocation Type: " + sighting.getLocationType()
                     + "\nIncident Zip: " + sighting.getIncidentZip()
