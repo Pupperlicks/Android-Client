@@ -253,7 +253,7 @@ public class MainActivity extends AppCompatActivity {
         btnShowListRats.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                startActivity(new Intent(MainActivity.this, SightingsListActivity.class));
+                startActivity(new Intent(MainActivity.this, SightingsListActivity2.class));
                 finish();
             }
         });

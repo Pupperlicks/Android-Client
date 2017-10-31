@@ -2,11 +2,13 @@ package com.example.cooperpellaton.pupperlicks;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-public class AddSightingActivity extends Activity {
+public class AddSightingActivity extends AppCompatActivity {
 
     private EditText editTextUniqueKey, editTextCreatedDate, editTextLocationType,
             editTextIncidentZip, editTextIncidentAddress, editTextCity, editTextBorough,
@@ -18,7 +20,12 @@ public class AddSightingActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_sighting);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+
+        // set up ToolBar
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar3);
+        setSupportActionBar(toolbar);
+
+        this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // set up textedits
         editTextUniqueKey = (EditText) findViewById(R.id.editTextUniqueKey);
