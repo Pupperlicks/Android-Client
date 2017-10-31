@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import org.json.JSONArray;
@@ -37,6 +38,11 @@ public class SightingsListActivity2 extends AppCompatActivity {
         // set up ToolBar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar2);
         setSupportActionBar(toolbar);
+
+        // TODO: change to something less silly
+        getSupportActionBar().setTitle("Rat Sightings");
+        // enable "up" button
+        this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
@@ -90,13 +96,14 @@ public class SightingsListActivity2 extends AppCompatActivity {
 
 //            LinearLayout listView = (LinearLayout) findViewById(R.id.linlay);
 
-
+            ProgressBar progressBar = (ProgressBar) findViewById(R.id.progressBar2);
             SightingsListAdapter sightingsAdapter =
                     new SightingsListAdapter(context, rats);
 
             ListView listView = (ListView) findViewById(R.id.sightingsList);
 //            listView.removeAllViews(); // TODO: ask why this is needed
             listView.setAdapter(sightingsAdapter);
+            progressBar.setVisibility(View.INVISIBLE);
 
 //            LayoutInflater inflater = (LayoutInflater) context.getSystemService(
 //                    Context.LAYOUT_INFLATER_SERVICE );
@@ -127,9 +134,7 @@ public class SightingsListActivity2 extends AppCompatActivity {
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    //
-                    Intent intent = new Intent(SightingsListActivity2.this, AddSightingActivity.class);
-                    startActivity(intent);
+                    startActivity(new Intent(SightingsListActivity2.this, AddSightingActivity.class));
                 }
             });
         }

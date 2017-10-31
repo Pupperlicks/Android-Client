@@ -58,6 +58,29 @@ public class AddSightingActivity extends AppCompatActivity {
                         editTextLongitude.getText().toString()));
             }
         });
+
+        // get bundle (if any)
+        Bundle b = getIntent().getExtras();
+        RatSighting sighting;
+
+        // if there's a bundle we're editing, if not we're adding
+        boolean isEditing = (b != null);
+
+        // if we are in fact editing, populate the editTexts with the existing data
+        if (isEditing) {
+            sighting = (RatSighting) b.getSerializable("details"); // de-serialize the RatSighting object
+
+            // populate textedits with values
+            editTextUniqueKey.setText(sighting.getUniqueKey());
+            editTextCreatedDate.setText(sighting.getCreatedDate());
+            editTextLocationType.setText(sighting.getLocationType());
+            editTextIncidentZip.setText(sighting.getIncidentZip());
+            editTextIncidentAddress.setText(sighting.getIncidentAddress());
+            editTextCity.setText(sighting.getCity());
+            editTextBorough.setText(sighting.getBorough());
+            editTextLatitude.setText(sighting.getLatitude());
+            editTextLongitude.setText(sighting.getLongitude());
+        }
     }
 
 }
