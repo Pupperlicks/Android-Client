@@ -128,6 +128,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     startDay.show();
                     DatePickerDialog endDay = new DatePickerDialog(context, MapsActivity.this, 2017, 0, 1);
                     endDay.show();
+
                 };
             });
         }
