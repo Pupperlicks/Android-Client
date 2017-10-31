@@ -45,8 +45,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="text"
-            android:text="UniqueKey" />
+            android:hint="UniqueKey"
+            android:inputType="text" />
 
         <EditText
             android:id="@+id/editTextCreatedDate"
