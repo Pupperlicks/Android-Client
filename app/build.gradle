@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 26
-    buildToolsVersion "26.0.1"
+    buildToolsVersion '26.0.2'
     defaultConfig {
         applicationId "com.example.cooperpellaton.pupperlicks"
         minSdkVersion 19
@@ -10,6 +10,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+//        multiDexEnabled true // needed so that we can include un-rebuildable JAR files (Travis)
     }
     buildTypes {
         release {
@@ -22,9 +23,10 @@ android {
 allprojects {
     repositories {
         jcenter()
-        maven {
-            url "https://maven.google.com" // Google's Maven repository
-        }
+//        maven {
+//            url "https://maven.google.com" // Google's Maven repository
+//        }
+        google()
     }
 }
 
@@ -49,7 +51,7 @@ dependencies {
     compile 'com.google.android.gms:play-services-maps:11.4.2'
 
     //This is the dependency for the GraphView
-    compile 'com.jjoe64:graphview:4.2.1'
+//    compile 'com.jjoe64:graphview:4.2.1'
 
 
     testCompile 'junit:junit:4.12'
