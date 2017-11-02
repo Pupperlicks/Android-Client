@@ -28,6 +28,7 @@ import org.json.JSONObject;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -38,9 +39,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private DatabaseReference mDatabase;
     private Adapter mAdapter;
     private HashMap<Date, LinkedList<RatSighting>> sightings;
-    private LinkedList chosenDates;
     private Button selectDateBtn;
-    Context context;
+
+    // sightings date range selection stuff
+    private DatePickerDialog endDatePickerDialog; // UI
+    private DatePickerDialog startDatePickerDialog; // UI
+    private DatePicker startDatePicker;
+    private DatePicker endDatePicker;
+    private Date startDate;
+    private Date endDate;
+
+//    Context context;
 
 
     @Override
@@ -48,15 +57,45 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         sightings = new HashMap<Date, LinkedList<RatSighting>>();
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
+
         mapFragment.getMapAsync(this);
+
         new MapSightingsTask().execute(this);
+
         selectDateBtn = (Button) findViewById(R.id.select_date_btn);
     }
+
     public void onDateSet(DatePicker view, int year, int month, int day) {
-        chosenDates.add(new Date(year, month, day));
+        // the "correct" way to set a date object (old constructor was deprecated)
+        Calendar cal = Calendar.getInstance(); // create calendar object
+        cal.set(Calendar.YEAR, year); // set year
+        cal.set(Calendar.MONTH, month); // set month (starting at Jan = 0)
+        cal.set(Calendar.DAY_OF_MONTH, day); // set day
+        Date date = cal.getTime(); // convert to Date object
+
+        // set up dateformatter for debug purposes
+        SimpleDateFormat df = new SimpleDateFormat("M/d/yyyy H:mm");
+
+        // determine which date picker was just used: the one for the starting date, or the one
+        // for the ending date?
+        if(view == startDatePicker) {
+            startDate = date; // set the instance variable
+            // place date in debug log
+            Log.d("PupperLicks/DatePicker", "startDate: " + df.format(startDate));
+
+        } else if (view == endDatePicker) {
+            endDate = date; // set the instance variable
+            // place date in debug log
+            Log.d("PupperLicks/DatePicker", "endDate: " + df.format(endDate));
+
+        // this should never happen (famous last words...)
+        } else {
+            throw new IllegalArgumentException("Invalid View passed, cannot parse date.");
+        }
     }
 
 
@@ -118,17 +157,30 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 ratMarker = mMap.addMarker(new MarkerOptions().position(rat).title(sighting.getUniqueKey()));
                 ratMarker.setTag(sighting);
             }
-            // TODO: Retrieve dates, filter using hashmap, clear map, display new markers.
-            mMap.setOnMarkerClickListener(MapsActivity.this);
+
+
+            mMap.setOnMarkerClickListener(MapsActivity.this); // TODO: clarify what this does
+
+            // set listener for date range button
             selectDateBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    MapsActivity.this.chosenDates = new LinkedList();
-                    DatePickerDialog startDay = new DatePickerDialog(context, MapsActivity.this, 2017, 0, 1);
-                    startDay.show();
-                    DatePickerDialog endDay = new DatePickerDialog(context, MapsActivity.this, 2017, 0, 1);
-                    endDay.show();
 
+                    // get the start date
+                    startDatePickerDialog = new DatePickerDialog(context, MapsActivity.this, 2015, 0, 1);
+                    // store the reference to the internal DatePicker so we can determine which one was pressed later
+                    startDatePicker = startDatePickerDialog.getDatePicker();
+                    startDatePickerDialog.show();
+
+                    // get the end date
+                    endDatePickerDialog = new DatePickerDialog(context, MapsActivity.this, 2017, 0, 1);
+                    // store the reference to the internal DatePicker so we can determine which one was pressed later
+                    endDatePicker = endDatePickerDialog.getDatePicker();
+                    endDatePickerDialog.show();
+
+                    // TODO: filter using hashmap, clear map, display new markers.
+                    // call server
+                    // ...
                 };
             });
         }
