@@ -21,7 +21,7 @@ import java.util.ArrayList;
 class SightingsListAdapter extends ArrayAdapter<RatSighting> {
 
     // constructor
-    public SightingsListAdapter(Context context, ArrayList<RatSighting> sightingArrayList) {
+    SightingsListAdapter(Context context, ArrayList<RatSighting> sightingArrayList) {
         super(context, 0, sightingArrayList);
     }
 
