@@ -8,9 +8,11 @@
     SHA-1 certificate fingerprint:
     1D:0D:7A:66:AF:8C:82:C3:46:AF:E1:84:02:52:B0:AA:99:CB:81:FE
 
+    D1:A7:09:98:D9:C0:3C:E8:00:8B:6D:91:B4:E9:A1:1E:20:D4:26:E5
+
     https://developers.google.com/maps/documentation/android/start#get-key
     -->
     <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">
-        AIzaSyBqAZuGemsexbS1h7g34hvaK49F7fcpl78
+        AIzaSyAqAH2rYPO-O8kzDYAgaE0ktoRkK1mv3aE
     </string>
 </resources>
