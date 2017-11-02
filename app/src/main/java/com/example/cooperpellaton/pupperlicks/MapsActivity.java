@@ -55,8 +55,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         new MapSightingsTask().execute(this);
         selectDateBtn = (Button) findViewById(R.id.select_date_btn);
     }
+
     public void onDateSet(DatePicker view, int year, int month, int day) {
         chosenDates.add(new Date(year, month, day));
+        mMap.clear();
     }
 
 
@@ -123,8 +125,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             selectDateBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    GoogleMap mMap = MapsActivity.this.mMap;
                     MapsActivity.this.chosenDates = new LinkedList();
-                    DatePickerDialog startDay = new DatePickerDialog(context, MapsActivity.this, 2017, 0, 1);
+                    DatePickerDialog startDay = new DatePickerDialog(context, MapsActivity.this, 2015, 8, 5);
                     startDay.show();
                     DatePickerDialog endDay = new DatePickerDialog(context, MapsActivity.this, 2017, 0, 1);
                     endDay.show();
