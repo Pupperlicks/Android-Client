@@ -24,7 +24,7 @@ public class DetailsActivity extends AppCompatActivity {
         AppBarLayout appBarLayout = findViewById(R.id.appbar);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true); // enable back button
 
 
         // get references to the TextViews in the layout

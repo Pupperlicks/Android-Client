@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Adapter;
@@ -34,7 +36,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, OnMarkerClickListener, DatePickerDialog.OnDateSetListener {
+public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, OnMarkerClickListener, DatePickerDialog.OnDateSetListener {
 
     private GoogleMap mMap;
     private DatabaseReference mDatabase;
@@ -59,6 +61,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
         sightings = new HashMap<Date, LinkedList<RatSighting>>();
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -67,9 +70,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         mapFragment.getMapAsync(this);
 
-        new MapSightingsTask().execute(this);
-
         selectDateBtn = (Button) findViewById(R.id.select_date_btn);
+
+        // set up Toolbar
+        Toolbar toolbar = findViewById(R.id.toolbar5);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true); // enable back button
+        getSupportActionBar().setTitle("Sightings Map");
+
+        new MapSightingsTask().execute(this);
     }
 
     public void onDateSet(DatePicker view, int year, int month, int day) {
@@ -183,8 +192,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     endDatePickerDialog.show();
 
                     // TODO: filter using hashmap, clear map, display new markers.
-                    // call server
-                    // ...
                 };
             });
         }
