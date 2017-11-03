@@ -28,6 +28,7 @@ import org.json.JSONObject;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -40,6 +41,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Adapter mAdapter;
     private HashMap<Date, LinkedList<RatSighting>> sightings;
     private Button selectDateBtn;
+
+    private ArrayList<RatSighting> sightingsList;
 
     // sightings date range selection stuff
     private DatePickerDialog endDatePickerDialog; // UI
@@ -101,13 +104,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     public class MapSightingsTask extends AsyncTask<Context, Context, Context> {
 
-        LinkedList<RatSighting> rats;
-
         @Override
         protected Context doInBackground(Context... contexts) {
 
+            // request list of sightings from the server
             JSONArray ratsJSON = ServerPortal.getFifty();
-            rats = new LinkedList<>();
+            sightingsList = new ArrayList<>();
 
             try {
                 Log.e("TASK", ratsJSON.toString());
@@ -115,7 +117,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                     JSONObject task = ratsJSON.getJSONObject(i);
                     Log.e("TASK", task.toString());
-                    rats.add(new RatSighting(
+                    sightingsList.add(new RatSighting(
                             task.getString("unique_key"),
                             task.getString("created_date"),
                             task.getString("location_type"),
@@ -128,7 +130,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     ));
                 }
 
-                Log.e("SIGHTINGS", "Rat list: " + rats.size());
+                Log.e("SIGHTINGS", "Rat list: " + sightingsList.size());
 
             } catch (JSONException ignored) {
                 Log.e("INFO", "Problem parsing info: " + ignored.toString());
@@ -141,9 +143,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             GoogleMap mMap = MapsActivity.this.mMap;
             Marker ratMarker;
             DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-            for (final RatSighting sighting: this.rats) {
+            for (final RatSighting sighting: sightingsList) {
                 try {
+                    // attempt to get the date from the sighting
                     Date date = format.parse(sighting.getCreatedDate());
+
                     if (!MapsActivity.this.sightings.containsKey(date)) {
                         LinkedList<RatSighting> dateList = new LinkedList<>();
                         MapsActivity.this.sightings.put(date, dateList);
@@ -199,8 +203,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        LatLng camera = new LatLng(40.70777155363643,-74.01296309970473); //TODO: get location from phone
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(camera));
+        // set location
+
+        //TODO: get location from phone
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(40.7128,-74.0060))); // move the camera to NYC
+        mMap.moveCamera(CameraUpdateFactory.zoomTo(10)); // zoom camera in
     }
 
     @Override
