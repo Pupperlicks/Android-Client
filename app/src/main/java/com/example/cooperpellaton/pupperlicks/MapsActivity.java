@@ -4,11 +4,12 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Adapter;
 import android.widget.Button;
@@ -16,8 +17,8 @@ import android.widget.DatePicker;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -54,7 +55,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private Date startDate;
     private Date endDate;
 
-//    Context context;
+    Context context;
 
 
     @Override
@@ -77,6 +78,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true); // enable back button
         getSupportActionBar().setTitle("Sightings Map");
+
+        // set context var
+        context = getApplicationContext();
 
         new MapSightingsTask().execute(this);
     }
@@ -108,6 +112,44 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         } else {
             throw new IllegalArgumentException("Invalid View passed, cannot parse date.");
         }
+    }
+
+    // toolbar items
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_maps, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.actions_maps_datefilter) {
+
+            // get the start date
+            startDatePickerDialog = new DatePickerDialog(MapsActivity.this, MapsActivity.this, 2015, 0, 1);
+
+            // store the reference to the internal DatePicker so we can determine which one was pressed later
+            startDatePicker = startDatePickerDialog.getDatePicker();
+            startDatePickerDialog.show();
+
+            // get the end date
+            endDatePickerDialog = new DatePickerDialog(MapsActivity.this, MapsActivity.this, 2017, 0, 1);
+            // store the reference to the internal DatePicker so we can determine which one was pressed later
+            endDatePickerDialog.setTitle("End Date");
+            endDatePicker = endDatePickerDialog.getDatePicker();
+            endDatePickerDialog.show();
+
+            return true; // consume the click event
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
 

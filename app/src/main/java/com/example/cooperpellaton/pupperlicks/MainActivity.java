@@ -1,13 +1,5 @@
 package com.example.cooperpellaton.pupperlicks;
 
-import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -53,12 +45,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user == null) {
-                    // user auth state is changed - user is null
-                    // launch login activity
-                    startActivity(new Intent(MainActivity.this, LoginActivity.class));
-                    finish();
-                }
+//                if (user == null) {
+//                    // user auth state is changed - user is null
+//                    // launch login activity
+//                    startActivity(new Intent(MainActivity.this, LoginActivity.class));
+//                    finish(); // destroy this activity so we can't get pulled in from back button
+//                }
             }
         };
 

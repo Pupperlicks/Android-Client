@@ -1,0 +1,11 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.cooperpellaton.pupperlicks.MapsActivity">
+    <item
+        android:id="@+id/actions_maps_datefilter"
+        android:icon="@drawable/ic_date_range_24dp"
+        android:orderInCategory="100"
+        android:title="Date Range"
+        app:showAsAction="always" />
+</menu>
