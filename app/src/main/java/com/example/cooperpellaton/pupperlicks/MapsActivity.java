@@ -10,9 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Adapter;
-import android.widget.Button;
 import android.widget.DatePicker;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -43,7 +41,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private DatabaseReference mDatabase;
     private Adapter mAdapter;
     private HashMap<Date, LinkedList<RatSighting>> sightings;
-    private Button selectDateBtn;
 
     private ArrayList<RatSighting> sightingsList;
 
@@ -70,8 +67,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .findFragmentById(R.id.map);
 
         mapFragment.getMapAsync(this);
-
-        selectDateBtn = (Button) findViewById(R.id.select_date_btn);
 
         // set up Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar5);
@@ -214,28 +209,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
 
 
-            mMap.setOnMarkerClickListener(MapsActivity.this); // TODO: clarify what this does
-
-            // set listener for date range button
-            selectDateBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    // get the start date
-                    startDatePickerDialog = new DatePickerDialog(context, MapsActivity.this, 2015, 0, 1);
-                    // store the reference to the internal DatePicker so we can determine which one was pressed later
-                    startDatePicker = startDatePickerDialog.getDatePicker();
-                    startDatePickerDialog.show();
-
-                    // get the end date
-                    endDatePickerDialog = new DatePickerDialog(context, MapsActivity.this, 2017, 0, 1);
-                    // store the reference to the internal DatePicker so we can determine which one was pressed later
-                    endDatePicker = endDatePickerDialog.getDatePicker();
-                    endDatePickerDialog.show();
-
-                    // TODO: filter using hashmap, clear map, display new markers.
-                };
-            });
+            mMap.setOnMarkerClickListener(MapsActivity.this); // listener handle is in this class
         }
     }
 

@@ -28,15 +28,4 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar5"
         tools:context="com.example.cooperpellaton.pupperlicks.MapsActivity" />
-
-    <Button
-        android:id="@+id/select_date_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/fab_margin"
-        android:layout_marginTop="@dimen/fab_margin"
-        android:padding="10dp"
-        android:text="Select Date Range"
-        app:layout_constraintEnd_toEndOf="@+id/map"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar5" />
 </android.support.constraint.ConstraintLayout>
