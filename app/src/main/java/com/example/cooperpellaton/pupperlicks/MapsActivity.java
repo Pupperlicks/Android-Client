@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Adapter;
 import android.widget.DatePicker;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -98,10 +99,22 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             // place date in debug log
             Log.d("PupperLicks/DatePicker", "startDate: " + df.format(startDate));
 
+
+            // now that we have the start date, get the end date
+            endDatePickerDialog = new DatePickerDialog(MapsActivity.this, MapsActivity.this, 2017, 0, 1);
+            // store the reference to the internal DatePicker so we can determine which one was pressed later
+            endDatePickerDialog.setTitle("End Date");
+            endDatePicker = endDatePickerDialog.getDatePicker();
+            endDatePickerDialog.show();
+            // display a helpful toast indicating what we need to be selecting
+            Toast.makeText(context, "Select end date", Toast.LENGTH_LONG).show();
+
         } else if (view == endDatePicker) {
             endDate = date; // set the instance variable
             // place date in debug log
             Log.d("PupperLicks/DatePicker", "endDate: " + df.format(endDate));
+
+            // TODO: this is where the item retrieval/filtering needs to be done
 
         // this should never happen (famous last words...)
         } else {
@@ -134,12 +147,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             startDatePicker = startDatePickerDialog.getDatePicker();
             startDatePickerDialog.show();
 
-            // get the end date
-            endDatePickerDialog = new DatePickerDialog(MapsActivity.this, MapsActivity.this, 2017, 0, 1);
-            // store the reference to the internal DatePicker so we can determine which one was pressed later
-            endDatePickerDialog.setTitle("End Date");
-            endDatePicker = endDatePickerDialog.getDatePicker();
-            endDatePickerDialog.show();
+            // display a helpful toast indicating what we need to be selecting
+            Toast.makeText(context, "Select start date", Toast.LENGTH_LONG).show();
 
             return true; // consume the click event
         }
