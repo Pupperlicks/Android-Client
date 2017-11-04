@@ -222,6 +222,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
+    private void addRangeMarkers() {
+
+    }
+
 
     /**
      * Manipulates the map once available.
