@@ -51,7 +51,7 @@ dependencies {
     compile 'com.google.android.gms:play-services-maps:11.4.2'
 
     //This is the dependency for the GraphView
-    compile 'com.jjoe64:graphview:4.2.1'
+    //compile 'com.jjoe64:graphview:4.2.1'
 
 
     testCompile 'junit:junit:4.12'
