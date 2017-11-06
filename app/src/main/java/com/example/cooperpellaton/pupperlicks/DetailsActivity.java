@@ -54,7 +54,7 @@ public class DetailsActivity extends AppCompatActivity {
 
         } else {
 //            detailsView.setText("Sighting not Found.");
-            Log.e("error", "A RatSIghting object wasn't passed in the bundle.");
+            Log.e("error", "A RatSighting object wasn't passed in the bundle.");
         }
     }
 }
