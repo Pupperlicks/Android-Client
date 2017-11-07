@@ -35,6 +35,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, OnMarkerClickListener, DatePickerDialog.OnDateSetListener {
 
@@ -43,7 +44,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private Adapter mAdapter;
     private HashMap<Date, LinkedList<RatSighting>> sightings;
 
-    private ArrayList<RatSighting> sightingsList;
+    private List<RatSighting> sightingsList;
 
     // sightings date range selection stuff
     private DatePickerDialog endDatePickerDialog; // UI
@@ -163,33 +164,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         protected Context doInBackground(Context... contexts) {
 
             // request list of sightings from the server
-            JSONArray ratsJSON = ServerPortal.getFifty();
-            sightingsList = new ArrayList<>();
+            sightingsList = ServerPortal.getFifty();
 
-            try {
-                Log.e("TASK", ratsJSON.toString());
-                for (int i = 0; i < ratsJSON.length(); i++) {
-
-                    JSONObject task = ratsJSON.getJSONObject(i);
-                    Log.e("TASK", task.toString());
-                    sightingsList.add(new RatSighting(
-                            task.getString("unique_key"),
-                            task.getString("created_date"),
-                            task.getString("location_type"),
-                            task.getString("incident_zip"),
-                            task.getString("incident_address"),
-                            task.getString("city"),
-                            task.getString("borough"),
-                            task.getString("latitude"),
-                            task.getString("longitude")
-                    ));
-                }
-
-                Log.e("SIGHTINGS", "Rat list: " + sightingsList.size());
-
-            } catch (JSONException ignored) {
-                Log.e("INFO", "Problem parsing info: " + ignored.toString());
-            }
             return contexts[0];
         }
 
