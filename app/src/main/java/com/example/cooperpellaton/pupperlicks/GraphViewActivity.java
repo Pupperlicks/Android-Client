@@ -62,7 +62,6 @@ public class GraphViewActivity extends AppCompatActivity implements DatePickerDi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graph);
         Bundle b = getIntent().getExtras();
-        this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // set up Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar6);
