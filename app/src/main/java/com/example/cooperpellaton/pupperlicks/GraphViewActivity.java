@@ -64,7 +64,7 @@ public class GraphViewActivity extends AppCompatActivity implements DatePickerDi
     private Date endDate;
 
     Context context;
-    private ArrayList<RatSighting> sightingsList;
+    private List<RatSighting> sightingsList;
 
 
     @Override
@@ -197,33 +197,8 @@ public class GraphViewActivity extends AppCompatActivity implements DatePickerDi
         protected Context doInBackground(Context... contexts) {
 
             // request list of sightings from the server
-            JSONArray ratsJSON = ServerPortal.getFifty();
-            sightingsList = new ArrayList<>();
+            sightingsList = ServerPortal.getFifty();
 
-            try {
-                Log.e("TASK", ratsJSON.toString());
-                for (int i = 0; i < ratsJSON.length(); i++) {
-
-                    JSONObject task = ratsJSON.getJSONObject(i);
-                    Log.e("TASK", task.toString());
-                    sightingsList.add(new RatSighting(
-                            task.getString("unique_key"),
-                            task.getString("created_date"),
-                            task.getString("location_type"),
-                            task.getString("incident_zip"),
-                            task.getString("incident_address"),
-                            task.getString("city"),
-                            task.getString("borough"),
-                            task.getString("latitude"),
-                            task.getString("longitude")
-                    ));
-                }
-
-                Log.e("SIGHTINGS", "Rat list: " + sightingsList.size());
-
-            } catch (JSONException ignored) {
-                Log.e("INFO", "Problem parsing info: " + ignored.toString());
-            }
             return contexts[0];
         }
 

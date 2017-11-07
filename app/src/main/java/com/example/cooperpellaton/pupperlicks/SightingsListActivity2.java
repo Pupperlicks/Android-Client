@@ -48,8 +48,7 @@ public class SightingsListActivity2 extends AppCompatActivity {
         @Override
         protected Context doInBackground(Context... contexts) {
 
-            JSONArray ratsJSON = ServerPortal.getFifty();
-            sightingsList = ServerPortal.JSONToRatSightings(ratsJSON);
+            sightingsList = ServerPortal.getFifty();
 
             return contexts[0]; // return the context we need
         }

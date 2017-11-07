@@ -29,27 +29,29 @@ import okhttp3.Response;
  */
 
 public class ServerPortal {
-    private static final String HOST = "http://54.158.72.38:5000/";
+    private static final String HOST = "http://54.158.72.38:5000/"; // the mothership
     private static final String FIFTY = "50_sightings";
     private static final String SIGHTINGS = "sightings";
     private static final String RANGE = "range";
 
     // Get all sightings from the server.
-    public static JSONArray getAllSightings() {
+    public static List<RatSighting> getAllSightings() {
         try {
             OkHttpClient client = new OkHttpClient();
             Request request = new Request.Builder()
                     .url(HOST + SIGHTINGS)
                     .build();
+
             Response response = client.newCall(request).execute();
-            return new JSONArray(response.body().string());
+
+            return JSONToRatSightings(new JSONArray(response.body().string()));
         } catch (IOException exception) {}
         catch (JSONException exception) {}
 
-        return new JSONArray(); // return an empty array if we can't do anything else
+        return new ArrayList<>(); // return an empty array if we can't do anything else
     }
 
-    public static JSONArray getFifty() {
+    public static List<RatSighting> getFifty() {
         try {
             OkHttpClient client = new OkHttpClient();
             Request request = new Request.Builder()
@@ -59,7 +61,8 @@ public class ServerPortal {
             Response response = client.newCall(request).execute();
             JSONArray obj = new JSONObject(response.body().string()).getJSONArray("sightings");
             Log.e("JSON", response.toString());
-            return obj;
+
+            return JSONToRatSightings(obj);
 
         } catch (IOException exception) {
             // TODO: handle this exception
@@ -67,10 +70,10 @@ public class ServerPortal {
             Log.e("error",  exception.toString());
         }
 
-        return new JSONArray(); // return an empty array if we can't do anything else
+        return new ArrayList<>(); // return an empty array if we can't do anything else
     }
 
-    public static JSONArray getRange(Date startDate, Date endDate) {
+    public static List<RatSighting> getRange(Date startDate, Date endDate) {
         DateFormat df = new SimpleDateFormat("MM/dd/yyyy"); // TODO: figure out if we actually do need to use trailing zeros here
 
         MediaType JSON = MediaType.parse("application/json; charset=utf-8");
@@ -99,7 +102,7 @@ public class ServerPortal {
             Response response = client.newCall(request).execute();
             JSONArray obj = new JSONObject(response.body().string()).getJSONArray("sightings");
             Log.e("JSON", response.toString());
-            return obj;
+            return JSONToRatSightings(obj);
 
         } catch (IOException exception) {
             Log.e("error", exception.toString());
@@ -107,10 +110,10 @@ public class ServerPortal {
             Log.e("error",  exception.toString());
         }
 
-        return new JSONArray();  // return an empty array if we can't do anything else
+        return new ArrayList<>();  // return an empty array if we can't do anything else
     }
 
-    static List<RatSighting> JSONToRatSightings(JSONArray arrayJson) {
+    private static List<RatSighting> JSONToRatSightings(JSONArray arrayJson) {
 
         // set up the list we will populate with RatSighting objects
         List<RatSighting> sightingsList = new ArrayList<>();

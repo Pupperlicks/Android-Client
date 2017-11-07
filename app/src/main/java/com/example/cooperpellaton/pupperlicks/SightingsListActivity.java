@@ -5,32 +5,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.content.Context;
 import android.os.AsyncTask;
-import android.os.Bundle;
-import android.app.Activity;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.View;
-import android.view.animation.AccelerateDecelerateInterpolator;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -54,38 +35,13 @@ public class SightingsListActivity extends AppCompatActivity {
 
     public class SightingsTask extends AsyncTask<Context, Context, Context> {
 
-        List<RatSighting> rats;
+        List<RatSighting> sightingsList;
 
         @Override
         protected Context doInBackground(Context... contexts) {
 
-            JSONArray ratsJSON = ServerPortal.getFifty();
-            rats = new LinkedList<>();
+            sightingsList = ServerPortal.getFifty();
 
-            try {
-                Log.e("TASK", ratsJSON.toString());
-                for (int i = 0; i < ratsJSON.length(); i++) {
-
-                    JSONObject task = ratsJSON.getJSONObject(i);
-                    Log.e("TASK", task.toString());
-                    rats.add(new RatSighting(
-                            task.getString("unique_key"),
-                            task.getString("created_date"),
-                            task.getString("location_type"),
-                            task.getString("incident_zip"),
-                            task.getString("incident_address"),
-                            task.getString("city"),
-                            task.getString("borough"),
-                            task.getString("latitude"),
-                            task.getString("longitude")
-                    ));
-                }
-
-                Log.e("SIGHTINGS", "Rat list: " + rats.size());
-
-            } catch (JSONException ignored) {
-                Log.e("INFO", "Problem parsing info: " + ignored.toString());
-            }
             return contexts[0];
         }
 
@@ -96,7 +52,7 @@ public class SightingsListActivity extends AppCompatActivity {
             listView.removeAllViews();
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(
                     Context.LAYOUT_INFLATER_SERVICE );
-            for (final RatSighting sighting: rats) {
+            for (final RatSighting sighting: sightingsList) {
                 TextView t = new TextView(context);
 
                 t.setText(sighting.getCreatedDate() + ":" + sighting.getUniqueKey());
