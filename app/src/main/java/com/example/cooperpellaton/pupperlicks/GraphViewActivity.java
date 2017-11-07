@@ -23,12 +23,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import com.jjoe64.graphview.*;
 import com.jjoe64.graphview.series.DataPoint;
@@ -144,6 +146,22 @@ public class GraphViewActivity extends AppCompatActivity implements DatePickerDi
         } else {
             throw new IllegalArgumentException("Invalid View passed, cannot parse date.");
         }
+
+        //gets time difference in milliseconds
+        long diff = endDate.getTime() - startDate.getTime();
+        int daysNumber = (int) TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+
+        //Might need to try/catch an exception
+//        try {
+//           if (daysNumber == 0) {
+//                Toast.makeText(context, "The date values you have chosen need to span at least 2 days.", Toast.LENGTH_LONG).show();
+//
+//            }
+//        } catch (java.te) {
+//
+//        }
+
+
     }
 
     @Override
