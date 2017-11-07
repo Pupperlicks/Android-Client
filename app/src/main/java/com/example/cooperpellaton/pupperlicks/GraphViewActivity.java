@@ -39,6 +39,11 @@ import com.jjoe64.graphview.series.LineGraphSeries;
  *
  */
 
+//TODO: make an async task
+    //TODO: pull the 50 rat sightings for the graph
+    //TODO: add a button to the menu - main activity
+    //number of sightings on specific date
+
 public class GraphViewActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
 
     // sightings date range selection stuff
