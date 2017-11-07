@@ -56,8 +56,24 @@ public class GraphViewActivity extends AppCompatActivity implements DatePickerDi
 
     Context context;
 
-    public GraphViewActivity(ArrayList<RatSighting> ratSightings) {
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_graph);
+        Bundle b = getIntent().getExtras();
+        this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        // set up Toolbar
+        Toolbar toolbar = findViewById(R.id.toolbar6);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true); // enable back button
+        getSupportActionBar().setTitle("Sightings Graph");
+
+        // set context var
+        context = getApplicationContext();
+
+        // GraphView
         GraphView graph = (GraphView) findViewById(R.id.graph);
         LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[] {
                 new DataPoint(0, 1),
@@ -69,30 +85,6 @@ public class GraphViewActivity extends AppCompatActivity implements DatePickerDi
 
 
         graph.addSeries(series);
-
-
-
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_graph);
-        Bundle b = getIntent().getExtras();
-        this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-
-
-
-        // set up Toolbar
-        Toolbar toolbar = findViewById(R.id.toolbar6);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true); // enable back button
-        getSupportActionBar().setTitle("Rat Sightings Graph");
-
-        // set context var
-        context = getApplicationContext();
-
     }
 
 
