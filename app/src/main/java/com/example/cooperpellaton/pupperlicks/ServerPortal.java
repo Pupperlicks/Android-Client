@@ -105,7 +105,7 @@ public class ServerPortal {
     // TODO: figure out if server is returning items from exclusive or inclusive date ranges
     static List<RatSighting> getRange(Date startDate, Date endDate) {
 
-        DateFormat df = new SimpleDateFormat("MM/dd/yyyy"); // TODO: figure out if we actually do need to use trailing zeros here
+        DateFormat df = new SimpleDateFormat("M/d/yyyy"); // TODO: figure out if we actually do need to use trailing zeros here
 
         MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
