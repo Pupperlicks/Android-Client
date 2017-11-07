@@ -191,6 +191,17 @@ public class GraphViewActivity extends AppCompatActivity implements DatePickerDi
             // request list of sightings from the server
             sightingsList = ServerPortal.getFifty();
 
+            // set up placeholder data series... for now
+            LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[] {
+                    new DataPoint(0, 1),
+                    new DataPoint(1, 5),
+                    new DataPoint(2, 3),
+                    new DataPoint(3, 2),
+                    new DataPoint(4, 6)
+            });
+
+            graph.addSeries(series); // set data set for graph
+
             return contexts[0];
         }
 
@@ -202,16 +213,7 @@ public class GraphViewActivity extends AppCompatActivity implements DatePickerDi
                     // attempt to get the date from the sighting
                     Date date = format.parse(sighting.getCreatedDate());
 
-                    // set up placeholder data series... for now
-                    LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[] {
-                            new DataPoint(0, 1),
-                            new DataPoint(1, 5),
-                            new DataPoint(2, 3),
-                            new DataPoint(3, 2),
-                            new DataPoint(4, 6)
-                    });
 
-                    graph.addSeries(series); // set data set for graph
 
                     } catch (java.text.ParseException e) {
                     Log.e("INFO", "Problem parsing info: " + sighting.getCreatedDate());
