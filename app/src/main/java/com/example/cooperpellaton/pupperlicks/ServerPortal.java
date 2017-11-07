@@ -26,7 +26,7 @@ import okhttp3.Response;
 
 /**
  * This is class is designed to be an easy-to-use way of accessing our backing server.
- * 
+ *
  * Created by Cooper Pellaton on 10/24/2017.
  */
 
@@ -44,6 +44,7 @@ public class ServerPortal {
      */
     // Get all sightings from the server.
     static List<RatSighting> getAllSightings() {
+
         try {
             OkHttpClient client = new OkHttpClient();
             Request request = new Request.Builder()
@@ -71,6 +72,7 @@ public class ServerPortal {
      * @return a list of RatSightings, or null if there was an issue retrieving them
      */
     static List<RatSighting> getFifty() {
+
         try {
             OkHttpClient client = new OkHttpClient();
             Request request = new Request.Builder()
@@ -102,6 +104,7 @@ public class ServerPortal {
      */
     // TODO: figure out if server is returning items from exclusive or inclusive date ranges
     static List<RatSighting> getRange(Date startDate, Date endDate) {
+
         DateFormat df = new SimpleDateFormat("MM/dd/yyyy"); // TODO: figure out if we actually do need to use trailing zeros here
 
         MediaType JSON = MediaType.parse("application/json; charset=utf-8");
@@ -124,12 +127,18 @@ public class ServerPortal {
             Request request = new Request.Builder()
                     .url(HOST + RANGE)
                     .post(body)
+                    .addHeader("content-type", "application/json; charset=utf-8")
+                    .addHeader("cache-control", "no-cache")
                     .build();
 
             // call the server and (hopefully) get a response
             Response response = client.newCall(request).execute();
+
+            // text response -> JSONArray
             JSONArray obj = new JSONObject(response.body().string()).getJSONArray("sightings");
-            Log.e("JSON", response.toString());
+
+            Log.d("JSON", response.toString());
+
             return JSONToRatSightings(obj);
 
         } catch (IOException exception) {
@@ -143,6 +152,7 @@ public class ServerPortal {
     }
 
     static void addReport(RatSighting sighting) {
+
             MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
             // create map to temporarily store the data
@@ -213,6 +223,7 @@ public class ServerPortal {
                     .url(HOST + SIGHTINGS)
                     .post(body) // special sauce to make this a POST request
                     .addHeader("content-type", "application/json; charset=utf-8")
+                    .addHeader("cache-control", "no-cache")
                     .build();
 
             // make the request
