@@ -3,6 +3,7 @@ package com.example.cooperpellaton.pupperlicks;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -21,15 +22,21 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 import com.jjoe64.graphview.*;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  *  This class creates the functionality behind Rat Tracker's Graph View.
@@ -39,9 +46,9 @@ import com.jjoe64.graphview.series.LineGraphSeries;
  *
  */
 
-//TODO: make an async task
-    //TODO: pull the 50 rat sightings for the graph
-    //TODO: add a button to the menu - main activity
+    //TODO: make an async task - working on it
+    //TODO: pull the 50 rat sightings for the graph - working on it
+
     //number of sightings on specific date
 
 public class GraphViewActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
@@ -55,10 +62,13 @@ public class GraphViewActivity extends AppCompatActivity implements DatePickerDi
     private Date endDate;
 
     Context context;
+    private ArrayList<RatSighting> sightingsList;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //make sure to process async first
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graph);
         Bundle b = getIntent().getExtras();
@@ -71,6 +81,7 @@ public class GraphViewActivity extends AppCompatActivity implements DatePickerDi
 
         // set context var
         context = getApplicationContext();
+        new GraphViewTask().execute(this);
 
         // GraphView
         GraphView graph = (GraphView) findViewById(R.id.graph);
@@ -159,6 +170,62 @@ public class GraphViewActivity extends AppCompatActivity implements DatePickerDi
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+    public class GraphViewTask extends AsyncTask<Context, Context, Context> {
+
+        @Override
+        protected Context doInBackground(Context... contexts) {
+
+            // request list of sightings from the server
+            JSONArray ratsJSON = ServerPortal.getFifty();
+            sightingsList = new ArrayList<>();
+
+            try {
+                Log.e("TASK", ratsJSON.toString());
+                for (int i = 0; i < ratsJSON.length(); i++) {
+
+                    JSONObject task = ratsJSON.getJSONObject(i);
+                    Log.e("TASK", task.toString());
+                    sightingsList.add(new RatSighting(
+                            task.getString("unique_key"),
+                            task.getString("created_date"),
+                            task.getString("location_type"),
+                            task.getString("incident_zip"),
+                            task.getString("incident_address"),
+                            task.getString("city"),
+                            task.getString("borough"),
+                            task.getString("latitude"),
+                            task.getString("longitude")
+                    ));
+                }
+
+                Log.e("SIGHTINGS", "Rat list: " + sightingsList.size());
+
+            } catch (JSONException ignored) {
+                Log.e("INFO", "Problem parsing info: " + ignored.toString());
+            }
+            return contexts[0];
+        }
+
+        @Override
+        protected void onPostExecute(final Context context) {
+            DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+            for (final RatSighting sighting: sightingsList) {
+                try {
+                    // attempt to get the date from the sighting
+                    Date date = format.parse(sighting.getCreatedDate());
+
+                    } catch (java.text.ParseException e) {
+                    Log.e("INFO", "Problem parsing info: " + sighting.getCreatedDate());
+                }
+
+
+            }
+
+
+        }
     }
 
 
