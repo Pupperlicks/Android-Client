@@ -258,6 +258,14 @@ public class MainActivity extends AppCompatActivity {
 //                finish();
             }
         });
+
+        btnShowMap.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                startActivity(new Intent(MainActivity.this, GraphViewActivity.class));
+//                finish();
+            }
+        });
     }
 
     //sign out method
