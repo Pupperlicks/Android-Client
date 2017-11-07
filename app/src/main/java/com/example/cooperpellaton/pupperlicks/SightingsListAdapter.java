@@ -12,6 +12,7 @@ import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Class designed to be an adapter from a a list of RatSightings to an Android ListView
@@ -21,7 +22,7 @@ import java.util.ArrayList;
 class SightingsListAdapter extends ArrayAdapter<RatSighting> {
 
     // constructor
-    SightingsListAdapter(Context context, ArrayList<RatSighting> sightingArrayList) {
+    SightingsListAdapter(Context context, List<RatSighting> sightingArrayList) {
         super(context, 0, sightingArrayList);
     }
 

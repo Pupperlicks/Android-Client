@@ -67,7 +67,7 @@ public class GraphViewActivity extends AppCompatActivity implements DatePickerDi
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //make sure to process async first
+        // make sure to process async first
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graph);
@@ -81,10 +81,13 @@ public class GraphViewActivity extends AppCompatActivity implements DatePickerDi
 
         // set context var
         context = getApplicationContext();
+
         new GraphViewTask().execute(this);
 
-        // GraphView
+        // instantiate graph view
         GraphView graph = (GraphView) findViewById(R.id.graph);
+
+        // set up placeholder data series... for now
         LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[] {
                 new DataPoint(0, 1),
                 new DataPoint(1, 5),
@@ -93,16 +96,13 @@ public class GraphViewActivity extends AppCompatActivity implements DatePickerDi
                 new DataPoint(4, 6)
         });
 
-
-        graph.addSeries(series);
+        graph.addSeries(series); // set data set for graph
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-     return true;
+        return true;
     }
-
 
     @Override
     public void onDateSet(DatePicker datePicker, int year, int month, int day) {
