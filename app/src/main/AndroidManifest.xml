@@ -56,14 +56,16 @@
         <activity
             android:name=".SightingsListActivity2"
             android:label="@string/title_activity_sightings_list2"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.cooperpellaton.pupperlicks.MainActivity" />
         </activity>
 
         <activity android:name=".DetailsActivity"
-            android:parentActivityName=".SightingsListActivity">
+            android:parentActivityName=".SightingsListActivity"
+            android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.cooperpellaton.pupperlicks.SightingsListActivity" />
@@ -81,7 +83,8 @@
         <activity
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps"
-        android:parentActivityName=".MainActivity">
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
             <meta-data
             android:name="android.support.PARENT_ACTIVITY"
             android:value="com.example.cooperpellaton.pupperlicks.MainActivity" />

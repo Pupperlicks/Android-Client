@@ -24,7 +24,7 @@ public class DetailsActivity extends AppCompatActivity {
         AppBarLayout appBarLayout = findViewById(R.id.appbar);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true); // enable back button
 
 
         // get references to the TextViews in the layout
@@ -54,7 +54,7 @@ public class DetailsActivity extends AppCompatActivity {
 
         } else {
 //            detailsView.setText("Sighting not Found.");
-            Log.e("error", "A RatSIghting object wasn't passed in the bundle.");
+            Log.e("error", "A RatSighting object wasn't passed in the bundle.");
         }
     }
 }

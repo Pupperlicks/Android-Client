@@ -7,6 +7,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,6 +30,7 @@ public class ServerPortal {
     private static final String HOST = "http://54.158.72.38:5000/";
     private static final String FIFTY = "50_sightings";
     private static final String SIGHTINGS = "sightings";
+    private static final String RANGE = "range";
 
     // Get all sightings from the server.
     public static JSONArray getAllSightings() {
@@ -49,6 +53,42 @@ public class ServerPortal {
             Request request = new Request.Builder()
                     .url(HOST + FIFTY)
                     .build();
+
+            Response response = client.newCall(request).execute();
+            JSONArray obj = new JSONObject(response.body().string()).getJSONArray("sightings");
+            Log.e("JSON", response.toString());
+            return obj;
+        } catch (IOException exception) {}
+        catch (JSONException exception) {
+            Log.e("error",  exception.toString());
+        }
+
+        return new JSONArray();
+    }
+
+    public static JSONArray getRange(Date startDate, Date endDate) {
+        DateFormat df = new SimpleDateFormat("M/d/yyyy"); // TODO: make sure the single 'M' here is actually what we need
+
+        MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+
+        // create map to temporarily store the data
+        Map<String, String> params = new HashMap<>();
+
+        // convert RatSighting object fields to map which can be converted to JSON
+        params.put("start_date", df.format(startDate));
+        params.put("end_date", df.format(endDate));
+
+        OkHttpClient client = new OkHttpClient();
+
+        JSONObject outgoing = new JSONObject(params);
+
+        RequestBody body = RequestBody.create(JSON, outgoing.toString());
+        try {
+            Request request = new Request.Builder()
+                    .url(HOST + RANGE)
+                    .post(body)
+                    .build();
+
             Response response = client.newCall(request).execute();
             JSONArray obj = new JSONObject(response.body().string()).getJSONArray("sightings");
             Log.e("JSON", response.toString());
@@ -65,7 +105,7 @@ public class ServerPortal {
             MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
             // create map to temporarily store the data
-            Map<String, String> params = new HashMap<String, String>();
+            Map<String, String> params = new HashMap<>();
 
             // convert RatSighting object fields to map which can be converted to JSON
             params.put("intersection_street_1", "");
