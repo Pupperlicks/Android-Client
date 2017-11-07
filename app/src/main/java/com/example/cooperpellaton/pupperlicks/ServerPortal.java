@@ -25,6 +25,8 @@ import okhttp3.Response;
 
 
 /**
+ * This is class is designed to be an easy-to-use way of accessing our backing server.
+ * 
  * Created by Cooper Pellaton on 10/24/2017.
  */
 
@@ -33,25 +35,42 @@ public class ServerPortal {
     private static final String FIFTY = "50_sightings";
     private static final String SIGHTINGS = "sightings";
     private static final String RANGE = "range";
+    private static final boolean useServer = true;
 
+    /**
+     * This method asks the server to return a list of all rat sightings in its database.
+     *
+     * @return a list of RatSightings, or null if there was an issue retrieving them
+     */
     // Get all sightings from the server.
-    public static List<RatSighting> getAllSightings() {
+    static List<RatSighting> getAllSightings() {
         try {
             OkHttpClient client = new OkHttpClient();
             Request request = new Request.Builder()
                     .url(HOST + SIGHTINGS)
                     .build();
 
+            // call the server and get the response
             Response response = client.newCall(request).execute();
 
             return JSONToRatSightings(new JSONArray(response.body().string()));
-        } catch (IOException exception) {}
-        catch (JSONException exception) {}
 
-        return new ArrayList<>(); // return an empty array if we can't do anything else
+        } catch (IOException exception) {
+            Log.e("SP:IO", exception.toString()); // print to debug log
+            return null; // receiving end should understand 'null' means an error took place
+        }
+        catch (JSONException exception) {
+            Log.e("SP:JSON", exception.toString());
+            return null;
+        }
     }
 
-    public static List<RatSighting> getFifty() {
+    /**
+     * This method asks the server to return a list of the first 50 rat sightings in the database.
+     *
+     * @return a list of RatSightings, or null if there was an issue retrieving them
+     */
+    static List<RatSighting> getFifty() {
         try {
             OkHttpClient client = new OkHttpClient();
             Request request = new Request.Builder()
@@ -65,15 +84,24 @@ public class ServerPortal {
             return JSONToRatSightings(obj);
 
         } catch (IOException exception) {
-            // TODO: handle this exception
-        } catch (JSONException exception) {
-            Log.e("error",  exception.toString());
+            Log.e("SP:IO", exception.toString()); // print to debug log
+            return null; // receiving end should understand 'null' means an error took place
         }
-
-        return new ArrayList<>(); // return an empty array if we can't do anything else
+        catch (JSONException exception) {
+            Log.e("SP:JSON", exception.toString());
+            return null;
+        }
     }
 
-    public static List<RatSighting> getRange(Date startDate, Date endDate) {
+    /**
+     * This method asks the server to return a list of the first 50 rat sightings in the database.
+     *
+     * @param startDate the earliest date we want sightings from, inclusive
+     * @param endDate the last date we want sightings from, inclusive
+     * @return a list of RatSightings, or null if there was an issue retrieving them
+     */
+    // TODO: figure out if server is returning items from exclusive or inclusive date ranges
+    static List<RatSighting> getRange(Date startDate, Date endDate) {
         DateFormat df = new SimpleDateFormat("MM/dd/yyyy"); // TODO: figure out if we actually do need to use trailing zeros here
 
         MediaType JSON = MediaType.parse("application/json; charset=utf-8");
@@ -105,51 +133,16 @@ public class ServerPortal {
             return JSONToRatSightings(obj);
 
         } catch (IOException exception) {
-            Log.e("error", exception.toString());
-        } catch (JSONException exception) {
-            Log.e("error",  exception.toString());
+            Log.e("SP:IO", exception.toString()); // print to debug log
+            return null; // receiving end should understand 'null' means an error took place
         }
-
-        return new ArrayList<>();  // return an empty array if we can't do anything else
+        catch (JSONException exception) {
+            Log.e("SP:JSON", exception.toString());
+            return null;
+        }
     }
 
-    private static List<RatSighting> JSONToRatSightings(JSONArray arrayJson) {
-
-        // set up the list we will populate with RatSighting objects
-        List<RatSighting> sightingsList = new ArrayList<>();
-
-        try {
-            Log.e("TASK", arrayJson.toString());
-            for (int i = 0; i < arrayJson.length(); i++) {
-
-                // extract JSON object from array of results
-                JSONObject task = arrayJson.getJSONObject(i);
-                Log.e("TASK", task.toString());
-
-                // construct RatSighting object from retrieved JSON object
-                sightingsList.add(new RatSighting(
-                        task.getString("unique_key"),
-                        task.getString("created_date"),
-                        task.getString("location_type"),
-                        task.getString("incident_zip"),
-                        task.getString("incident_address"),
-                        task.getString("city"),
-                        task.getString("borough"),
-                        task.getString("latitude"),
-                        task.getString("longitude")
-                ));
-            }
-
-            Log.e("SIGHTINGS", "Rat list: " + sightingsList.size());
-
-        } catch (JSONException ignored) {
-            Log.e("INFO", "Problem parsing info: " + ignored.toString());
-        }
-
-        return sightingsList;
-    }
-
-    public static void addReport(RatSighting sighting) {
+    static void addReport(RatSighting sighting) {
             MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
             // create map to temporarily store the data
@@ -235,5 +228,48 @@ public class ServerPortal {
                     Log.e("response", response.body().string());
                 }
             });
+    }
+
+    /**
+     * This method takes care of converting an array of JSON objects into an equivalent list of
+     * RatSighting objects, which can then be manipulated.
+     *
+     * @param arrayJson the JSONArray to be converted to a list of RatSighting objects
+     * @return a list of converted RatSighting objects
+     */
+    private static List<RatSighting> JSONToRatSightings(JSONArray arrayJson) {
+
+        // set up the list we will populate with RatSighting objects
+        List<RatSighting> sightingsList = new ArrayList<>();
+
+        try {
+            Log.e("TASK", arrayJson.toString());
+            for (int i = 0; i < arrayJson.length(); i++) {
+
+                // extract JSON object from array of results
+                JSONObject task = arrayJson.getJSONObject(i);
+                Log.e("TASK", task.toString());
+
+                // construct RatSighting object from retrieved JSON object
+                sightingsList.add(new RatSighting(
+                        task.getString("unique_key"),
+                        task.getString("created_date"),
+                        task.getString("location_type"),
+                        task.getString("incident_zip"),
+                        task.getString("incident_address"),
+                        task.getString("city"),
+                        task.getString("borough"),
+                        task.getString("latitude"),
+                        task.getString("longitude")
+                ));
+            }
+
+            Log.e("SIGHTINGS", "Rat list: " + sightingsList.size());
+
+        } catch (JSONException ignored) {
+            Log.e("INFO", "Problem parsing info: " + ignored.toString());
+        }
+
+        return sightingsList;
     }
 }
