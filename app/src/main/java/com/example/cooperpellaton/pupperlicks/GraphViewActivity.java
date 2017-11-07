@@ -63,6 +63,8 @@ public class GraphViewActivity extends AppCompatActivity implements DatePickerDi
     private Date startDate;
     private Date endDate;
 
+    GraphView graph;
+
     Context context;
     private List<RatSighting> sightingsList;
 
@@ -87,18 +89,8 @@ public class GraphViewActivity extends AppCompatActivity implements DatePickerDi
         new GraphViewTask().execute(this);
 
         // instantiate graph view
-        GraphView graph = (GraphView) findViewById(R.id.graph);
+        graph = (GraphView) findViewById(R.id.graph);
 
-        // set up placeholder data series... for now
-        LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[] {
-                new DataPoint(0, 1),
-                new DataPoint(1, 5),
-                new DataPoint(2, 3),
-                new DataPoint(3, 2),
-                new DataPoint(4, 6)
-        });
-
-        graph.addSeries(series); // set data set for graph
     }
 
     @Override
@@ -209,6 +201,17 @@ public class GraphViewActivity extends AppCompatActivity implements DatePickerDi
                 try {
                     // attempt to get the date from the sighting
                     Date date = format.parse(sighting.getCreatedDate());
+
+                    // set up placeholder data series... for now
+                    LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[] {
+                            new DataPoint(0, 1),
+                            new DataPoint(1, 5),
+                            new DataPoint(2, 3),
+                            new DataPoint(3, 2),
+                            new DataPoint(4, 6)
+                    });
+
+                    graph.addSeries(series); // set data set for graph
 
                     } catch (java.text.ParseException e) {
                     Log.e("INFO", "Problem parsing info: " + sighting.getCreatedDate());
