@@ -81,6 +81,15 @@
         </activity>
 
         <activity
+            android:name=".GraphViewActivity"
+            android:label="GraphViewActivity"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.cooperpellaton.pupperlicks.MainActivity" />
+        </activity>
+
+        <activity
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps"
             android:parentActivityName=".MainActivity"
