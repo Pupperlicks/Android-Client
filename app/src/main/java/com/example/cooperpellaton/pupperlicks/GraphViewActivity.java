@@ -93,9 +93,38 @@ public class GraphViewActivity extends AppCompatActivity implements DatePickerDi
 
     }
 
+    // toolbar items
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_graph, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.actions_graph_datefilter) {
+
+            // get the start date
+            startDatePickerDialog = new DatePickerDialog(GraphViewActivity.this, GraphViewActivity.this, 2015, 0, 1);
+
+            // store the reference to the internal DatePicker so we can determine which one was pressed later
+            startDatePicker = startDatePickerDialog.getDatePicker();
+            startDatePickerDialog.show();
+
+            // display a helpful toast indicating what we need to be selecting
+            Toast.makeText(context, "Select start date", Toast.LENGTH_LONG).show();
+
+            return true; // consume the click event
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -154,32 +183,6 @@ public class GraphViewActivity extends AppCompatActivity implements DatePickerDi
 //        }
 
 
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.actions_maps_datefilter) {
-
-            // get the start date
-            startDatePickerDialog = new DatePickerDialog(GraphViewActivity.this, GraphViewActivity.this, 2015, 0, 1);
-
-            // store the reference to the internal DatePicker so we can determine which one was pressed later
-            startDatePicker = startDatePickerDialog.getDatePicker();
-            startDatePickerDialog.show();
-
-            // display a helpful toast indicating what we need to be selecting
-            Toast.makeText(context, "Select start date", Toast.LENGTH_LONG).show();
-
-            return true; // consume the click event
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
 
