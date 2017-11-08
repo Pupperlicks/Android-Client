@@ -15,6 +15,12 @@ import android.widget.Toast;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+
+
+/**
+ * This class allows a user to add a RatSighting to the database.
+ *
+ */
 public class AddSightingActivity extends AppCompatActivity {
 
     private EditText editTextUniqueKey, editTextCreatedDate, editTextLocationType,
@@ -22,6 +28,7 @@ public class AddSightingActivity extends AppCompatActivity {
             editTextLatitude, editTextLongitude;
 
     private Button btnSave;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

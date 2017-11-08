@@ -1,13 +1,5 @@
 package com.example.cooperpellaton.pupperlicks;
 
-import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -27,7 +19,7 @@ import com.google.firebase.auth.FirebaseUser;
 public class MainActivity extends AppCompatActivity {
 
     private Button btnChangeEmail, btnChangePassword, btnSendResetEmail, btnRemoveUser,
-            changeEmail, changePassword, sendEmail, remove, signOut, btnShowListRats, btnShowMap;
+            changeEmail, changePassword, sendEmail, remove, signOut, btnShowListRats, btnShowMap, btnShowGraph;
 
     private EditText oldEmail, newEmail, password, newPassword;
     private ProgressBar progressBar;
@@ -53,17 +45,18 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user == null) {
-                    // user auth state is changed - user is null
-                    // launch login activity
-                    startActivity(new Intent(MainActivity.this, LoginActivity.class));
-                    finish();
-                }
+//                if (user == null) {
+//                    // user auth state is changed - user is null
+//                    // launch login activity
+//                    startActivity(new Intent(MainActivity.this, LoginActivity.class));
+//                    finish(); // destroy this activity so we can't get pulled in from back button
+//                }
             }
         };
 
         btnShowListRats = (Button) findViewById(R.id.listbtn);
         btnShowMap = (Button) findViewById(R.id.mapbtn);
+        btnShowGraph = (Button) findViewById(R.id.graphbtn);
         btnChangeEmail = (Button) findViewById(R.id.change_email_button);
         btnChangePassword = (Button) findViewById(R.id.change_password_button);
         btnSendResetEmail = (Button) findViewById(R.id.sending_pass_reset_button);
@@ -249,7 +242,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-//        If the user wants to see rats, we'll show them rats!
+//        If the user wants to see sightingsList, we'll show them sightingsList!
         btnShowListRats.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
@@ -262,6 +255,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v){
                 startActivity(new Intent(MainActivity.this, MapsActivity.class));
+//                finish();
+            }
+        });
+
+        btnShowGraph.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                startActivity(new Intent(MainActivity.this, GraphViewActivity.class));
 //                finish();
             }
         });

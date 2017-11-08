@@ -1,10 +1,11 @@
 package com.example.cooperpellaton.pupperlicks;
 
+import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
@@ -24,8 +25,9 @@ public class DetailsActivity extends AppCompatActivity {
         AppBarLayout appBarLayout = findViewById(R.id.appbar);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true); // enable back button
 
+        ImageView ivDetailsBackground = findViewById(R.id.iv_details);
 
         // get references to the TextViews in the layout
         TextView tvCreatedDate = findViewById(R.id.textViewCreatedDate);
@@ -52,9 +54,18 @@ public class DetailsActivity extends AppCompatActivity {
 
             this.getSupportActionBar().setTitle("Sighting " + sighting.getUniqueKey());
 
+            // calculate the amount of pixels
+//            DisplayMetrics displayMetrics = getApplicationContext().getResources().getDisplayMetrics();
+//
+//            ivDetailsBackground.setImageDrawable(new ClassicIdenticonDrawable(
+//                    displayMetrics.widthPixels,
+//                    displayMetrics.widthPixels,
+//                    sighting.getHash() + 1)
+//            );
+
         } else {
 //            detailsView.setText("Sighting not Found.");
-            Log.e("error", "A RatSIghting object wasn't passed in the bundle.");
+            Log.e("error", "A RatSighting object wasn't passed in the bundle.");
         }
     }
 }

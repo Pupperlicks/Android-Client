@@ -109,6 +109,11 @@ public class RatSighting implements Serializable {
         this.longitude = longitude;
     }
 
+    public int getHash() {
+        // rudimentary hash function
+        return Integer.parseInt(uniqueKey) * Integer.parseInt(uniqueKey);
+    }
+
     // basic toString method
     @Override
     public String toString() {
