@@ -163,7 +163,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             if((startDate == null) || (endDate == null)) { // if date ranges haven't been set
                 sightingsList = ServerPortal.getFifty(); // get fifty earliest sightings
-            } else { // otherwise, use the date ranges that have been set
+            } else { // otherwise, use the date ranges that have been set to query the server
                 sightingsList = ServerPortal.getRange(startDate, endDate);
             }
 
