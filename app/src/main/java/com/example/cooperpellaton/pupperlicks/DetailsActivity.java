@@ -1,10 +1,11 @@
 package com.example.cooperpellaton.pupperlicks;
 
+import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
@@ -26,6 +27,7 @@ public class DetailsActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true); // enable back button
 
+        ImageView ivDetailsBackground = findViewById(R.id.iv_details);
 
         // get references to the TextViews in the layout
         TextView tvCreatedDate = findViewById(R.id.textViewCreatedDate);
@@ -51,6 +53,15 @@ public class DetailsActivity extends AppCompatActivity {
             tvCoords.setText(sighting.getLatitude() + ", " + sighting.getLongitude());
 
             this.getSupportActionBar().setTitle("Sighting " + sighting.getUniqueKey());
+
+            // calculate the amount of pixels
+//            DisplayMetrics displayMetrics = getApplicationContext().getResources().getDisplayMetrics();
+//
+//            ivDetailsBackground.setImageDrawable(new ClassicIdenticonDrawable(
+//                    displayMetrics.widthPixels,
+//                    displayMetrics.widthPixels,
+//                    sighting.getHash() + 1)
+//            );
 
         } else {
 //            detailsView.setText("Sighting not Found.");
