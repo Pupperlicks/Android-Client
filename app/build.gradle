@@ -50,9 +50,7 @@ dependencies {
     compile 'com.google.code.gson:gson:2.8.2'
     compile 'com.google.android.gms:play-services-maps:11.4.2'
 
-    //This is the dependency for the GraphView
-    //compile 'com.jjoe64:graphview:4.2.1'
-
+    compile 'com.github.lelloman:android-identicons:v7'
 
     testCompile 'junit:junit:4.12'
     apply plugin: 'com.google.gms.google-services'

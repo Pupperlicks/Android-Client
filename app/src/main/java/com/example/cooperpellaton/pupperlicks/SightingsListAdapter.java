@@ -3,15 +3,16 @@ package com.example.cooperpellaton.pupperlicks;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
-import android.widget.ListAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Class designed to be an adapter from a a list of RatSightings to an Android ListView
@@ -20,9 +21,12 @@ import java.util.ArrayList;
 
 class SightingsListAdapter extends ArrayAdapter<RatSighting> {
 
+    Context context;
+
     // constructor
-    SightingsListAdapter(Context context, ArrayList<RatSighting> sightingArrayList) {
+    SightingsListAdapter(Context context, List<RatSighting> sightingArrayList) {
         super(context, 0, sightingArrayList);
+        this.context = context;
     }
 
     @Override
@@ -36,8 +40,9 @@ class SightingsListAdapter extends ArrayAdapter<RatSighting> {
         // Lookup view for data population
         TextView tvUniqueKey = (TextView) convertView.findViewById(R.id.tvUniqueKey);
         TextView tvCreatedDate = (TextView) convertView.findViewById(R.id.tvCreatedDate);
+        ImageView identiconView = convertView.findViewById(R.id.list_identiconview);
 
-        LinearLayout llSightingItem = (LinearLayout) convertView.findViewById(R.id.llSightingItem);
+        ConstraintLayout llSightingItem = convertView.findViewById(R.id.llSightingItem);
 
         // Cache user object inside the button using `setTag`
         llSightingItem.setTag(sighting);
@@ -63,6 +68,18 @@ class SightingsListAdapter extends ArrayAdapter<RatSighting> {
         // Populate the data into the template view using the data object
         tvUniqueKey.setText(sighting.getUniqueKey());
         tvCreatedDate.setText(sighting.getCreatedDate());
+
+        // calculate the amount of pixels
+        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+        int convertedPixels = (int)((64 * displayMetrics.density) + 0.5);
+
+        // generate and set identicon
+        identiconView.setImageDrawable(new NoBgClassicIdenticonDrawable(
+                convertedPixels,
+                convertedPixels,
+                sighting.hashCode() + 1)
+        );
+
         // Return the completed view to render on screen
         return convertView;
     }

@@ -242,7 +242,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-//        If the user wants to see rats, we'll show them rats!
+//        If the user wants to see sightingsList, we'll show them sightingsList!
         btnShowListRats.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){

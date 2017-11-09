@@ -83,6 +83,7 @@
         <activity
             android:name=".GraphViewActivity"
             android:label="GraphViewActivity"
+            android:theme="@style/AppTheme.NoActionBar"
             android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

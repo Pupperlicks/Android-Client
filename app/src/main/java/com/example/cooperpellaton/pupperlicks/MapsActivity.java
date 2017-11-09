@@ -24,17 +24,13 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.database.DatabaseReference;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, OnMarkerClickListener, DatePickerDialog.OnDateSetListener {
 
@@ -43,15 +39,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private Adapter mAdapter;
     private HashMap<Date, LinkedList<RatSighting>> sightings;
 
-    private ArrayList<RatSighting> sightingsList;
+    private List<RatSighting> sightingsList;
 
-    // sightings date range selection stuff
-    private DatePickerDialog endDatePickerDialog; // UI
-    private DatePickerDialog startDatePickerDialog; // UI
     private DatePicker startDatePicker;
     private DatePicker endDatePicker;
     private Date startDate;
     private Date endDate;
+
+    private DateFormat df;
 
     Context context;
 
@@ -60,6 +55,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
+//        GoogleMap mMap = MapsActivity.this.mMap;
 
         sightings = new HashMap<Date, LinkedList<RatSighting>>();
 
@@ -78,6 +75,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         // set context var
         context = getApplicationContext();
 
+        df = new SimpleDateFormat("M/d/yyyy H:mm");
+
+        // start asynchronous task that asks the server for sightings
         new MapSightingsTask().execute(this);
     }
 
@@ -89,9 +89,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         cal.set(Calendar.DAY_OF_MONTH, day); // set day
         Date date = cal.getTime(); // convert to Date object
 
-        // set up dateformatter for debug purposes
-        SimpleDateFormat df = new SimpleDateFormat("M/d/yyyy H:mm");
-
         // determine which date picker was just used: the one for the starting date, or the one
         // for the ending date?
         if(view == startDatePicker) {
@@ -101,7 +98,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
             // now that we have the start date, get the end date
-            endDatePickerDialog = new DatePickerDialog(MapsActivity.this, MapsActivity.this, 2017, 0, 1);
+            DatePickerDialog endDatePickerDialog = new DatePickerDialog(MapsActivity.this, MapsActivity.this, 2017, 0, 1);
             // store the reference to the internal DatePicker so we can determine which one was pressed later
             endDatePickerDialog.setTitle("End Date");
             endDatePicker = endDatePickerDialog.getDatePicker();
@@ -115,6 +112,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             Log.d("PupperLicks/DatePicker", "endDate: " + df.format(endDate));
 
             // TODO: this is where the item retrieval/filtering needs to be done
+            // start asynchronous task that asks the server for sightings (again)
+            new MapSightingsTask().execute(this);
 
         // this should never happen (famous last words...)
         } else {
@@ -141,7 +140,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         if (id == R.id.actions_maps_datefilter) {
 
             // get the start date
-            startDatePickerDialog = new DatePickerDialog(MapsActivity.this, MapsActivity.this, 2015, 0, 1);
+            DatePickerDialog startDatePickerDialog = new DatePickerDialog(MapsActivity.this, MapsActivity.this, 2015, 0, 1);
 
             // store the reference to the internal DatePicker so we can determine which one was pressed later
             startDatePicker = startDatePickerDialog.getDatePicker();
@@ -162,61 +161,50 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         @Override
         protected Context doInBackground(Context... contexts) {
 
-            // request list of sightings from the server
-            JSONArray ratsJSON = ServerPortal.getFifty();
-            sightingsList = new ArrayList<>();
-
-            try {
-                Log.e("TASK", ratsJSON.toString());
-                for (int i = 0; i < ratsJSON.length(); i++) {
-
-                    JSONObject task = ratsJSON.getJSONObject(i);
-                    Log.e("TASK", task.toString());
-                    sightingsList.add(new RatSighting(
-                            task.getString("unique_key"),
-                            task.getString("created_date"),
-                            task.getString("location_type"),
-                            task.getString("incident_zip"),
-                            task.getString("incident_address"),
-                            task.getString("city"),
-                            task.getString("borough"),
-                            task.getString("latitude"),
-                            task.getString("longitude")
-                    ));
-                }
-
-                Log.e("SIGHTINGS", "Rat list: " + sightingsList.size());
-
-            } catch (JSONException ignored) {
-                Log.e("INFO", "Problem parsing info: " + ignored.toString());
+            if((startDate == null) || (endDate == null)) { // if date ranges haven't been set
+                sightingsList = ServerPortal.getFifty(); // get fifty earliest sightings
+            } else { // otherwise, use the date ranges that have been set to query the server
+                sightingsList = ServerPortal.getRange(startDate, endDate);
             }
+
             return contexts[0];
         }
 
         @Override
         protected void onPostExecute(final Context context) {
-            GoogleMap mMap = MapsActivity.this.mMap;
+
             Marker ratMarker;
-            DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+
+            mMap.clear(); // clear any existing markers
+
             for (final RatSighting sighting: sightingsList) {
                 try {
                     // attempt to get the date from the sighting
-                    Date date = format.parse(sighting.getCreatedDate());
+                    Date date = df.parse(sighting.getCreatedDate());
 
                     if (!MapsActivity.this.sightings.containsKey(date)) {
                         LinkedList<RatSighting> dateList = new LinkedList<>();
                         MapsActivity.this.sightings.put(date, dateList);
                     }
+
                     MapsActivity.this.sightings.get(date).add(sighting);
                 } catch (java.text.ParseException e) {
                     Log.e("INFO", "Problem parsing info: " + sighting.getCreatedDate());
                 }
 
-                LatLng rat = new LatLng(Double.parseDouble(sighting.getLatitude()), Double.parseDouble(sighting.getLongitude()));
-                ratMarker = mMap.addMarker(new MarkerOptions().position(rat).title(sighting.getUniqueKey()));
-                ratMarker.setTag(sighting);
-            }
+                // evidently some rat sightings don't have latitude/longitude
+                if ((sighting.getLatitude().length() != 0) && (sighting.getLongitude().length() != 0)) {
 
+                    // parse the lat and long
+                    LatLng rat = new LatLng(
+                            Double.parseDouble(sighting.getLatitude()),
+                            Double.parseDouble(sighting.getLongitude())
+                    );
+
+                    ratMarker = mMap.addMarker(new MarkerOptions().position(rat).title(sighting.getUniqueKey()));
+                    ratMarker.setTag(sighting);
+                }
+            }
 
             mMap.setOnMarkerClickListener(MapsActivity.this); // listener handle is in this class
         }
