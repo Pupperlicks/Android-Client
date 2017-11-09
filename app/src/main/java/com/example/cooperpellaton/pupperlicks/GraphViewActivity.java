@@ -99,7 +99,7 @@ public class GraphViewActivity extends AppCompatActivity implements DatePickerDi
         // the "correct" way to set a date object (old constructor was deprecated)
         Calendar cal = Calendar.getInstance(); // create calendar object
 
-        cal.set(Calendar.YEAR, 2015); // set to current year
+        cal.set(Calendar.YEAR, 2017); // set to current year
         cal.set(Calendar.MONTH, 0); // set month (starting at Jan = 0)
         cal.set(Calendar.DAY_OF_MONTH, 31); // set day
 
@@ -286,8 +286,8 @@ public class GraphViewActivity extends AppCompatActivity implements DatePickerDi
             graph.getViewport().setMaxX(endDate.getTime());
             graph.getViewport().setXAxisBoundsManual(true);
 
-// as we use dates as labels, the human rounding to nice readable numbers
-// is not necessary
+            // as we use dates as labels, the human rounding to nice readable numbers
+            // is not necessary
             graph.getGridLabelRenderer().setHumanRounding(false);
 
         }
