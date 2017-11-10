@@ -267,7 +267,7 @@ public class GraphViewActivity extends AppCompatActivity implements DatePickerDi
             int counter = 0;
 
             for (Date entry : map.keySet()) {
-                dataPoints[counter] = new DataPoint(entry, map.get(entry));
+                dataPoints[counter] = new DataPoint(entry.getTime(), map.get(entry));
                 counter++;
             }
 
@@ -277,14 +277,14 @@ public class GraphViewActivity extends AppCompatActivity implements DatePickerDi
             graph.addSeries(series); // set data set for graph
 
             // set date label formatter
-            graph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(context));
+           // graph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(context));
             graph.getGridLabelRenderer().setNumHorizontalLabels(3); // only 4 because of the space
             series.setTitle("Sightings per day");
 
-            // set manual x bounds to have nice steps
-            graph.getViewport().setMinX(startDate.getTime());
-            graph.getViewport().setMaxX(endDate.getTime());
-            graph.getViewport().setXAxisBoundsManual(true);
+//            // set manual x bounds to have nice steps
+//            graph.getViewport().setMinX(startDate.getTime());
+//            graph.getViewport().setMaxX(endDate.getTime());
+//            graph.getViewport().setXAxisBoundsManual(true);
 
             // as we use dates as labels, the human rounding to nice readable numbers
             // is not necessary
