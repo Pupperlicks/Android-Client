@@ -236,7 +236,8 @@ public class ServerPortal {
 
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
-                    Log.e("response", response.body().string());
+                    String serverResp = response.body().string();
+                    Log.e("response", serverResp);
                 }
             });
     }
