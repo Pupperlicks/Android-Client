@@ -4,7 +4,6 @@ import android.content.Context;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.app.Activity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -23,11 +22,14 @@ import java.util.Calendar;
  */
 public class AddSightingActivity extends AppCompatActivity {
 
-    private EditText editTextUniqueKey, editTextCreatedDate, editTextLocationType,
-            editTextIncidentZip, editTextIncidentAddress, editTextCity, editTextBorough,
-            editTextLatitude, editTextLongitude;
-
-    private Button btnSave;
+    private EditText editTextUniqueKey;
+    private EditText editTextLocationType;
+    private EditText editTextIncidentZip;
+    private EditText editTextIncidentAddress;
+    private EditText editTextCity;
+    private EditText editTextBorough;
+    private EditText editTextLatitude;
+    private EditText editTextLongitude;
 
 
     @Override
@@ -36,31 +38,31 @@ public class AddSightingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_sighting);
 
         // set up ToolBar
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar3);
+        Toolbar toolbar = findViewById(R.id.toolbar3);
         setSupportActionBar(toolbar);
 
         this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // set up textedits
-        editTextUniqueKey = (EditText) findViewById(R.id.editTextUniqueKey);
-        editTextCreatedDate = (EditText) findViewById(R.id.editTextCreatedDate);
-        editTextLocationType = (EditText) findViewById(R.id.editTextLocationType);
-        editTextIncidentZip = (EditText) findViewById(R.id.editTextIncidentZip);
-        editTextIncidentAddress = (EditText) findViewById(R.id.editTextIncidentAddress);
-        editTextCity = (EditText) findViewById(R.id.editTextCity);
-        editTextBorough = (EditText) findViewById(R.id.editTextBorough);
-        editTextLatitude = (EditText) findViewById(R.id.editTextLatitude);
-        editTextLongitude = (EditText) findViewById(R.id.editTextLongitude);
+        editTextUniqueKey = findViewById(R.id.editTextUniqueKey);
+        EditText editTextCreatedDate = findViewById(R.id.editTextCreatedDate);
+        editTextLocationType = findViewById(R.id.editTextLocationType);
+        editTextIncidentZip = findViewById(R.id.editTextIncidentZip);
+        editTextIncidentAddress = findViewById(R.id.editTextIncidentAddress);
+        editTextCity = findViewById(R.id.editTextCity);
+        editTextBorough = findViewById(R.id.editTextBorough);
+        editTextLatitude = findViewById(R.id.editTextLatitude);
+        editTextLongitude = findViewById(R.id.editTextLongitude);
 
         // set up button
-        btnSave = (Button) findViewById(R.id.button2);
+        Button btnSave = findViewById(R.id.button2);
 
         // set up location services so we can get current lat and long
-        LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+        LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         try {
             Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
-            if(location != null) {
+            if (location != null) {
 
                 double longitude = location.getLongitude();
                 double latitude = location.getLatitude();
@@ -69,7 +71,7 @@ public class AddSightingActivity extends AppCompatActivity {
                 editTextLongitude.setText(String.valueOf(longitude));
             }
 
-        } catch (SecurityException e) {
+        } catch (SecurityException ignored) {
 
         }
 
@@ -91,7 +93,8 @@ public class AddSightingActivity extends AppCompatActivity {
                         && (editTextLongitude.getText().length() != 0)
                         ) {
 
-                    ServerPortal sp = new ServerPortal(); // instantiate server access object
+                    // instantiate server access object
+                    ServerPortalUtilites sp = new ServerPortalUtilites();
 
                     // take care of considerations for timestamps
                     Calendar c = Calendar.getInstance();
@@ -100,7 +103,7 @@ public class AddSightingActivity extends AppCompatActivity {
 
                     // build rat sighting object and send server add request
 
-                    sp.addReport(new RatSighting(
+                    ServerPortalUtilites.addReport(new RatSighting(
                             editTextUniqueKey.getText().toString(),
                             df.format(c.getTime()), // gets current time and formats it
                             editTextLocationType.getText().toString(),
@@ -113,7 +116,8 @@ public class AddSightingActivity extends AppCompatActivity {
                     );
                 } else {
                     // construct toast and display it
-                    Toast.makeText(getApplicationContext(), "No fields must be left blank", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),
+                            "No fields must be left blank", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -127,7 +131,8 @@ public class AddSightingActivity extends AppCompatActivity {
 
         // if we are in fact editing, populate the editTexts with the existing data
         if (isEditing) {
-            sighting = (RatSighting) b.getSerializable("details"); // de-serialize the RatSighting object
+            // de-serialize the RatSighting object
+            sighting = (RatSighting) b.getSerializable("details");
 
             // populate textedits with values
             editTextUniqueKey.setText(sighting.getUniqueKey());

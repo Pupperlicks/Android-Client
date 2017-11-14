@@ -9,18 +9,31 @@ import java.io.Serializable;
 
 public class RatSighting implements Serializable {
     // minimum fields that need to be handled:
-    private String uniqueKey;
-    private String createdDate;
-    private String locationType;
-    private String incidentZip;
-    private String incidentAddress;
-    private String city;
-    private String borough;
-    private String latitude;
-    private String longitude;
+    private final String uniqueKey;
+    private final String createdDate;
+    private final String locationType;
+    private final String incidentZip;
+    private final String incidentAddress;
+    private final String city;
+    private final String borough;
+    private final String latitude;
+    private final String longitude;
     // end minimum fields
 
     // main constructor
+
+    /**
+     * The constructor for a rat sighting.
+     * @param uniqueKey The unique key.
+     * @param createdDate The date the rat sighting was created.
+     * @param locationType The type of location.
+     * @param incidentZip Zip code of incident.
+     * @param incidentAddress Address.
+     * @param city City.
+     * @param borough Borough.
+     * @param latitude Latitude.
+     * @param longitude Longitude.
+     */
     public RatSighting(String uniqueKey, String createdDate, String locationType,
                        String incidentZip, String incidentAddress, String city, String borough,
                        String latitude, String longitude) {
@@ -37,81 +50,76 @@ public class RatSighting implements Serializable {
 
     // getters and setters
 
+    /**
+     * Get the unique key.
+     * @return the unique key.
+     */
     public String getUniqueKey() {
         return uniqueKey;
     }
 
-    public void setUniqueKey(String uniqueKey) {
-        this.uniqueKey = uniqueKey;
-    }
-
+    /**
+     * Get the created date.
+     * @return the created date.
+     */
     public String getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(String createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public String getLocationType() {
+    /**
+     * Get the location type.
+     * @return the location type.
+     */
+    public CharSequence getLocationType() {
         return locationType;
     }
 
-    public void setLocationType(String locationType) {
-        this.locationType = locationType;
-    }
-
+    /**
+     * Get the zip code.
+     * @return The zip code.
+     */
     public String getIncidentZip() {
         return incidentZip;
     }
 
-    public void setIncidentZip(String incidentZip) {
-        this.incidentZip = incidentZip;
-    }
-
+    /**
+     * Get the incident address.
+     * @return The address.
+     */
     public String getIncidentAddress() {
         return incidentAddress;
     }
 
-    public void setIncidentAddress(String incidentAddress) {
-        this.incidentAddress = incidentAddress;
-    }
-
+    /**
+     * Get the city.
+     * @return The city.
+     */
     public String getCity() {
         return city;
     }
 
-    public void setCity(String city) {
-        this.city = city;
-    }
-
+    /**
+     * Get the borough.
+     * @return The borough.
+     */
     public String getBorough() {
         return borough;
     }
 
-    public void setBorough(String borough) {
-        this.borough = borough;
-    }
-
+    /**
+     * Get the latitude.
+     * @return The latitude.
+     */
     public String getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(String latitude) {
-        this.latitude = latitude;
-    }
-
+    /**
+     * Get the longitude.
+     * @return The longitude.
+     */
     public String getLongitude() {
         return longitude;
-    }
-
-    public void setLongitude(String longitude) {
-        this.longitude = longitude;
-    }
-
-    public int getHash() {
-        // rudimentary hash function
-        return Integer.parseInt(uniqueKey) * Integer.parseInt(uniqueKey);
     }
 
     // basic toString method

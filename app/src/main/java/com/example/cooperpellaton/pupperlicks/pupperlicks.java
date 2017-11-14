@@ -7,7 +7,7 @@ import android.content.Context;
  * A class that simply gets the context of the application.
  * Needed for Firebase.
  */
-public class pupperlicks extends Application {
+class pupperlicks extends Application {
 
     private static Application sApplication;
 
@@ -15,7 +15,7 @@ public class pupperlicks extends Application {
      * Get the current application.
      * @return the current application.
      */
-    public static Application getApplication() {
+    private static Application getApplication() {
         return sApplication;
     }
 

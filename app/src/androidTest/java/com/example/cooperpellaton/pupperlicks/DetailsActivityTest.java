@@ -26,7 +26,7 @@ import static org.junit.Assert.assertNull;
 @RunWith(AndroidJUnit4.class)
 public class DetailsActivityTest {
     @Rule
-    public ActivityTestRule<DetailsActivity> mActivityRule = new ActivityTestRule<>(
+    public final ActivityTestRule<DetailsActivity> mActivityRule = new ActivityTestRule<>(
             DetailsActivity.class,
             false,
             false); // so that intent can be customized

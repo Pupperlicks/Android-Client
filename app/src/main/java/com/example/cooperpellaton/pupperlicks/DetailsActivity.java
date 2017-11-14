@@ -13,9 +13,9 @@ import android.widget.TextView;
  * Created by Ronnie on 10/10/2017.
  * updated 10/17/17
  */
-public class DetailsActivity extends AppCompatActivity {
+class DetailsActivity extends AppCompatActivity {
 
-    RatSighting sighting;
+    private RatSighting sighting;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,7 +23,6 @@ public class DetailsActivity extends AppCompatActivity {
         setContentView(R.layout.details_view);
 
         Bundle b = getIntent().getExtras();
-
         AppBarLayout appBarLayout = findViewById(R.id.appbar);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -56,14 +55,6 @@ public class DetailsActivity extends AppCompatActivity {
 
             this.getSupportActionBar().setTitle("Sighting " + sighting.getUniqueKey());
 
-            // calculate the amount of pixels
-//            DisplayMetrics displayMetrics = getApplicationContext().getResources().getDisplayMetrics();
-//
-//            ivDetailsBackground.setImageDrawable(new ClassicIdenticonDrawable(
-//                    displayMetrics.widthPixels,
-//                    displayMetrics.widthPixels,
-//                    sighting.getHash() + 1)
-//            );
 
         } else {
 //            detailsView.setText("Sighting not Found.");

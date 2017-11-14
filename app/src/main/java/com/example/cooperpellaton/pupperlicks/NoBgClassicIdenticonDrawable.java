@@ -11,14 +11,14 @@ import com.lelloman.identicon.util.TileMeasures;
 /**
  * 	draws the identicon given an {@link ClassicIdenticonHash}
  */
-public class NoBgClassicIdenticonDrawable extends IdenticonDrawable {
+class NoBgClassicIdenticonDrawable extends IdenticonDrawable {
 
-    protected ClassicIdenticonHash mIdenticonHash;
+    private ClassicIdenticonHash mIdenticonHash;
 
-    private Paint mBgPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-    private Paint mFgPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    private final Paint mBgPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    private final Paint mFgPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
-    private TileMeasures mTileMeasure;
+    private final TileMeasures mTileMeasure;
 
     public NoBgClassicIdenticonDrawable(int width, int height, int hash) {
         super(width,height, hash,3);
@@ -36,15 +36,16 @@ public class NoBgClassicIdenticonDrawable extends IdenticonDrawable {
     }
 
     @Override
-    protected void onSetHash(int hash) {
+    protected final void onSetHash(int hash) {
         mIdenticonHash = new ClassicIdenticonHash(hash);
     }
 
     @Override
     protected void drawBitmap(Canvas canvas) {
 
-        if(mIdenticonHash == null)
+        if(mIdenticonHash == null) {
             return;
+        }
 
         mFgPaint.setColor(getColor());
 
@@ -55,15 +56,15 @@ public class NoBgClassicIdenticonDrawable extends IdenticonDrawable {
         drawSides(canvas);
     }
 
-    protected int getColor(){
-        int r = 100 + mIdenticonHash.getR() * 8;
-        int g = 100 + mIdenticonHash.getG() * 8;
-        int b = 100 + mIdenticonHash.getB() * 8;
+    private int getColor(){
+        int r = 100 + (mIdenticonHash.getR() * 8);
+        int g = 100 + (mIdenticonHash.getG() * 8);
+        int b = 100 + (mIdenticonHash.getB() * 8);
 
-        return 0xff000000 + r * 0x10000 + g * 0x100 + b;
+        return 0xff000000 + (r * 0x10000) + (g * 0x100) + b;
     }
 
-    protected ClassicIdenticonTile.Tiles getTile(int position){
+    private ClassicIdenticonTile.Tiles getTile(int position){
         return ClassicIdenticonTile.all[position];
     }
 
@@ -91,7 +92,7 @@ public class NoBgClassicIdenticonDrawable extends IdenticonDrawable {
         Paint fg = invert ? mFgPaint : mBgPaint;
         Paint bg = invert ? mBgPaint : mFgPaint;
 
-        drawer.draw(canvas, mTileMeasure, 0 + rotation, bg, fg);
+        drawer.draw(canvas, mTileMeasure, rotation, bg, fg);
 
         canvas.save();
         canvas.translate(mTileMeasure.width2, 0);
@@ -121,7 +122,7 @@ public class NoBgClassicIdenticonDrawable extends IdenticonDrawable {
 
         canvas.save();
         canvas.translate(0, mTileMeasure.height);
-        drawer.draw(canvas, mTileMeasure, 0 + rotation, bg, fg);
+        drawer.draw(canvas, mTileMeasure, rotation, bg, fg);
         canvas.restore();
 
         canvas.save();

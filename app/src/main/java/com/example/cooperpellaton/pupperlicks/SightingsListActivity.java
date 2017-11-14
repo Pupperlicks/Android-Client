@@ -40,7 +40,7 @@ public class SightingsListActivity extends AppCompatActivity {
         @Override
         protected Context doInBackground(Context... contexts) {
 
-            sightingsList = ServerPortal.getFifty();
+            sightingsList = ServerPortalUtilites.getFifty();
 
             return contexts[0];
         }
@@ -48,7 +48,7 @@ public class SightingsListActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(final Context context) {
 
-            LinearLayout listView = (LinearLayout) findViewById(R.id.linlay);
+            LinearLayout listView = findViewById(R.id.linlay);
             listView.removeAllViews();
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(
                     Context.LAYOUT_INFLATER_SERVICE );
@@ -61,7 +61,8 @@ public class SightingsListActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         // set the information for the detail view here
-                        Intent intent = new Intent(SightingsListActivity.this, DetailsActivity.class);
+                        Intent intent = new Intent(SightingsListActivity.this,
+                                DetailsActivity.class);
                         Bundle b = new Bundle();
                         b.putSerializable("details", sighting);
                         intent.putExtras(b);
@@ -79,7 +80,8 @@ public class SightingsListActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     //
-                    Intent intent = new Intent(SightingsListActivity.this, AddSightingActivity.class);
+                    Intent intent = new Intent(SightingsListActivity.this,
+                            AddSightingActivity.class);
                     startActivity(intent);
                 }
             });
