@@ -6,6 +6,8 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
 /**
+ *
+ * To test if DetailsActivity.getSighting() populates a RatSighting.
  * Created by Victoria Joh on 11/13/17.
  */
 
