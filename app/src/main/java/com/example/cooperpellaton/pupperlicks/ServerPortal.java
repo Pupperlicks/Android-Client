@@ -37,6 +37,14 @@ public class ServerPortal {
     private static final String RANGE = "range";
     private static final boolean useServer = true;
 
+    public static String getHOST() {
+        return HOST;
+    }
+
+    public static String getSIGHTINGS() {
+        return SIGHTINGS;
+    }
+
     /**
      * This method asks the server to return a list of all rat sightings in its database.
      *
@@ -236,7 +244,8 @@ public class ServerPortal {
 
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
-                    Log.e("response", response.body().string());
+                    String serverResp = response.body().string();
+                    Log.e("response", serverResp);
                 }
             });
     }

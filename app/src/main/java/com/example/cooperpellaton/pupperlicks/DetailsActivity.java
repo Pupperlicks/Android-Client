@@ -14,13 +14,15 @@ import android.widget.TextView;
  * updated 10/17/17
  */
 public class DetailsActivity extends AppCompatActivity {
+
+    RatSighting sighting;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.details_view);
 
         Bundle b = getIntent().getExtras();
-        RatSighting sighting;
 
         AppBarLayout appBarLayout = findViewById(R.id.appbar);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -67,5 +69,9 @@ public class DetailsActivity extends AppCompatActivity {
 //            detailsView.setText("Sighting not Found.");
             Log.e("error", "A RatSighting object wasn't passed in the bundle.");
         }
+    }
+
+    public RatSighting getSighting() {
+        return sighting;
     }
 }
