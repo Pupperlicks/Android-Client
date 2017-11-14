@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-
+import static org.junit.Assert.assertTrue;
 /**
  *
  * To test if DetailsActivity.getSighting() populates a RatSighting.
@@ -17,7 +17,8 @@ public class GetSightingTest {
 
    DetailsActivity activity = new DetailsActivity();
 
-   RatSighting sighting = new RatSighting("alolo", "11/13/2017", "locationType",
+
+    RatSighting sighting = new RatSighting("alolo", "11/13/2017", "locationType",
            "incidentZip", "incidentAddress", "city","borough",
            "latitude", "longitude");
 
@@ -28,7 +29,19 @@ public class GetSightingTest {
     @Test
     public void sightingIsPopulated() {
 
-        assertFalse(sighting.equals(activity.getSighting()));
+        String testString = "RatSighting{}"
+                + "\n uniqueKey: " + sighting.getUniqueKey()
+                + "\n createdDate: " + sighting.getCreatedDate()
+                + "\n locationType: " + sighting.getLocationType()
+                + "\n incidentZip: " + sighting.getIncidentZip()
+                + "\n incidentAddress: " + sighting.getIncidentAddress()
+                + "\n city: " + sighting.getCity()
+                + "\n borough: " + sighting.getBorough()
+                + "\n latitude: " + sighting.getLatitude()
+                + "\n longitude: " + sighting.getLongitude();
+
+
+        assertEquals(sighting.toString(), testString);
     }
 
     /**
