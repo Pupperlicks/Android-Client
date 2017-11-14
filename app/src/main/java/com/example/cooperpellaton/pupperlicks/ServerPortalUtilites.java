@@ -30,12 +30,11 @@ import okhttp3.Response;
  * Created by Cooper Pellaton on 10/24/2017.
  */
 
-public class ServerPortal {
+class ServerPortalUtilites {
     private static final String HOST = "http://54.158.72.38:5000/"; // the mothership
     private static final String FIFTY = "50_sightings";
     private static final String SIGHTINGS = "sightings";
     private static final String RANGE = "range";
-    private static final boolean useServer = true;
 
     public static String getHOST() {
         return HOST;
@@ -54,7 +53,7 @@ public class ServerPortal {
     static List<RatSighting> getAllSightings() {
 
         try {
-            OkHttpClient client = new OkHttpClient();
+            Call.Factory client = new OkHttpClient();
             Request request = new Request.Builder()
                     .url(HOST + SIGHTINGS)
                     .build();
@@ -82,7 +81,7 @@ public class ServerPortal {
     static List<RatSighting> getFifty() {
 
         try {
-            OkHttpClient client = new OkHttpClient();
+            Call.Factory client = new OkHttpClient();
             Request request = new Request.Builder()
                     .url(HOST + FIFTY)
                     .build();
@@ -110,10 +109,9 @@ public class ServerPortal {
      * @param endDate the last date we want sightings from, inclusive
      * @return a list of RatSightings, or null if there was an issue retrieving them
      */
-    // TODO: figure out if server is returning items from exclusive or inclusive date ranges
     static List<RatSighting> getRange(Date startDate, Date endDate) {
 
-        DateFormat df = new SimpleDateFormat("M/d/yyyy"); // TODO: figure out if we actually do need to use trailing zeros here
+        DateFormat df = new SimpleDateFormat("M/d/yyyy");
 
         MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
@@ -124,7 +122,7 @@ public class ServerPortal {
         params.put("start_date", df.format(startDate));
         params.put("end_date", df.format(endDate));
 
-        OkHttpClient client = new OkHttpClient();
+        Call.Factory client = new OkHttpClient();
 
         JSONObject outgoing = new JSONObject(params); // generate JSON object from map entries
 
@@ -220,7 +218,7 @@ public class ServerPortal {
             params.put("park_facility_name", "");
             params.put("bridge_highway_direction", "");
 
-            OkHttpClient client = new OkHttpClient();
+            Call.Factory client = new OkHttpClient();
 
             JSONObject outgoing = new JSONObject(params);
 

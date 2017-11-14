@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -21,7 +22,7 @@ import java.util.List;
 
 class SightingsListAdapter extends ArrayAdapter<RatSighting> {
 
-    Context context;
+    private final Context context;
 
     // constructor
     SightingsListAdapter(Context context, List<RatSighting> sightingArrayList) {
@@ -31,18 +32,20 @@ class SightingsListAdapter extends ArrayAdapter<RatSighting> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        View convertView1 = convertView;
         // Get the data item for this position
         RatSighting sighting = getItem(position);
         // Check if an existing view is being reused, otherwise inflate the view
-        if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.rat_sighting_list_item, parent, false);
+        if (convertView1 == null) {
+            convertView1 = LayoutInflater.from(getContext())
+                    .inflate(R.layout.rat_sighting_list_item, parent, false);
         }
         // Lookup view for data population
-        TextView tvUniqueKey = (TextView) convertView.findViewById(R.id.tvUniqueKey);
-        TextView tvCreatedDate = (TextView) convertView.findViewById(R.id.tvCreatedDate);
-        ImageView identiconView = convertView.findViewById(R.id.list_identiconview);
+        TextView tvUniqueKey = convertView1.findViewById(R.id.tvUniqueKey);
+        TextView tvCreatedDate = convertView1.findViewById(R.id.tvCreatedDate);
+        ImageView identiconView = convertView1.findViewById(R.id.list_identiconview);
 
-        ConstraintLayout llSightingItem = convertView.findViewById(R.id.llSightingItem);
+        ConstraintLayout llSightingItem = convertView1.findViewById(R.id.llSightingItem);
 
         // Cache user object inside the button using `setTag`
         llSightingItem.setTag(sighting);
@@ -52,7 +55,7 @@ class SightingsListAdapter extends ArrayAdapter<RatSighting> {
             @Override
             public void onClick(View view) {
                 // Access user from within the tag
-                RatSighting sighting = (RatSighting) view.getTag();
+                Serializable sighting = (RatSighting) view.getTag();
                 // Do what you want here...
                 // set the information for the detail view here
                 Intent intent = new Intent(getContext(), DetailsActivity.class);
@@ -71,7 +74,7 @@ class SightingsListAdapter extends ArrayAdapter<RatSighting> {
 
         // calculate the amount of pixels
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
-        int convertedPixels = (int)((64 * displayMetrics.density) + 0.5);
+        int convertedPixels = (int) ((64 * displayMetrics.density) + 0.5);
 
         // generate and set identicon
         identiconView.setImageDrawable(new NoBgClassicIdenticonDrawable(
@@ -81,7 +84,7 @@ class SightingsListAdapter extends ArrayAdapter<RatSighting> {
         );
 
         // Return the completed view to render on screen
-        return convertView;
+        return convertView1;
     }
 
 }

@@ -1,11 +1,11 @@
 package com.example.cooperpellaton.pupperlicks;
 
+import android.app.Instrumentation;
 import android.os.AsyncTask;
-import android.support.v7.util.AsyncListUtil;
 import android.test.InstrumentationTestCase;
 
-import org.junit.Test;
 import org.junit.Assert;
+import org.junit.Test;
 
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
@@ -13,21 +13,20 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Cooper Pellaton on 11/13/2017.
- * A suite of tests to cover ServerPortal.getAllSightings().
+ * A suite of tests to cover ServerPortalUtilites.getAllSightings().
  * Tests that:
  *  Return isn't null.
  *  Return is bigger than 50 items.
  *  Return is bigger than 1000 items.
  *  The base url for the request is the server.
  *  The query parameter used is to get all the sightings.
- *  The content returned is different from ServerPortal.getFifty().
+ *  The content returned is different from ServerPortalUtilites.getFifty().
  */
 
 public class AllSightingsUnitTest extends InstrumentationTestCase {
-    RatSighting sighting = new RatSighting("31464015", "11/13/2017 0:00", "3+ Family Mixed Use Building", "30332", "921 Hemphill Avenue", "Atlanta", "Midtown", "33.779823", "-84.402131");
-    ServerPortal portal = new ServerPortal();
     private List<RatSighting> sightingsList;
     private List<RatSighting> comparisonList;
+    private final int waitTime = 30;
 
     /**
      * Tests whether the response from getting the sightings is null.
@@ -42,7 +41,7 @@ public class AllSightingsUnitTest extends InstrumentationTestCase {
 
             @Override
             protected String doInBackground(String... arg0) {
-                sightingsList = portal.getAllSightings();
+                sightingsList = ServerPortalUtilites.getAllSightings();
                 return("Success.");
             }
 
@@ -62,8 +61,8 @@ public class AllSightingsUnitTest extends InstrumentationTestCase {
             }
         });
 
-        signal.await(30, TimeUnit.SECONDS);
-        assertNotNull("The array is not null.", sightingsList);
+        signal.await(waitTime, TimeUnit.SECONDS);
+        Assert.assertNotNull("The array is not null.", sightingsList);
     }
 
     /**
@@ -79,7 +78,7 @@ public class AllSightingsUnitTest extends InstrumentationTestCase {
 
             @Override
             protected String doInBackground(String... arg0) {
-                sightingsList = portal.getAllSightings();
+                sightingsList = ServerPortalUtilites.getAllSightings();
                 return("Success.");
             }
 
@@ -99,9 +98,11 @@ public class AllSightingsUnitTest extends InstrumentationTestCase {
             }
         });
 
-        signal.await(30, TimeUnit.SECONDS);
-        assertEquals("The array is of size greater than fifty.", sightingsList.size()>0, true);
-        assertEquals("The array contains more than 1000 entries", sightingsList.size()>1000, true);
+        signal.await(waitTime, TimeUnit.SECONDS);
+        Assert.assertEquals("The array is of size greater than fifty.",
+                !sightingsList.isEmpty(), true);
+        Assert.assertEquals("The array contains more than 1000 entries",
+                sightingsList.size() > 1000, true);
     }
 
     /**
@@ -117,7 +118,7 @@ public class AllSightingsUnitTest extends InstrumentationTestCase {
 
             @Override
             protected String doInBackground(String... arg0) {
-                sightingsList = portal.getAllSightings();
+                sightingsList = ServerPortalUtilites.getAllSightings();
                 return("Success.");
             }
 
@@ -137,8 +138,9 @@ public class AllSightingsUnitTest extends InstrumentationTestCase {
             }
         });
 
-        signal.await(30, TimeUnit.SECONDS);
-        assertEquals("The array contains more than 1000 entries", sightingsList.size()>1000, true);
+        signal.await(waitTime, TimeUnit.SECONDS);
+        Assert.assertEquals("The array contains more than 1000 entries",
+                sightingsList.size() > 1000, true);
     }
 
     /**
@@ -147,7 +149,8 @@ public class AllSightingsUnitTest extends InstrumentationTestCase {
      */
     @Test
     public void testEndpointBase() throws Throwable {
-        assertEquals("Check that the HOST is the expected IP.", portal.getHOST().equals("http://54.158.72.38:5000/") , true);
+        Assert.assertEquals("Check that the HOST is the expected IP.",
+                "http://54.158.72.38:5000/".equals(ServerPortalUtilites.getHOST()), true);
     }
 
     /**
@@ -156,7 +159,8 @@ public class AllSightingsUnitTest extends InstrumentationTestCase {
      */
     @Test
     public void testQueryParameter() throws Throwable {
-        assertEquals("Check that the query parameter is correct for all sightings.", portal.getSIGHTINGS().equals("sightings"), true);
+        Assert.assertEquals("Check that the query parameter is correct for all sightings.",
+                "sightings".equals(ServerPortalUtilites.getSIGHTINGS()), true);
     }
 
     /**
@@ -172,8 +176,8 @@ public class AllSightingsUnitTest extends InstrumentationTestCase {
 
             @Override
             protected String doInBackground(String... arg0) {
-                sightingsList = portal.getAllSightings();
-                comparisonList = portal.getFifty();
+                sightingsList = ServerPortalUtilites.getAllSightings();
+                comparisonList = ServerPortalUtilites.getFifty();
                 return("Success.");
             }
 
@@ -193,10 +197,13 @@ public class AllSightingsUnitTest extends InstrumentationTestCase {
             }
         });
 
-        signal.await(30, TimeUnit.SECONDS);
-        assertTrue("Check that the lists aren't the same.", !sightingsList.equals(comparisonList));
-        assertTrue("Check that the sizes aren't the same.", !(sightingsList.size() == comparisonList.size()));
-        assertTrue("Check that both lists aren't null.", !(sightingsList == null) && !(comparisonList == null));
+        signal.await(waitTime, TimeUnit.SECONDS);
+        Assert.assertTrue("Check that the lists aren't the same.",
+                !sightingsList.equals(comparisonList));
+        Assert.assertTrue("Check that the sizes aren't the same.",
+                !(sightingsList.size() == comparisonList.size()));
+        Assert.assertTrue("Check that both lists aren't null.",
+                !(sightingsList == null) && !(comparisonList == null));
     }
 
 }

@@ -16,7 +16,8 @@
         android:theme="?attr/actionBarTheme"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:targetApi="lollipop" />
 
     <ProgressBar
         android:id="@+id/progressBar2"
@@ -42,7 +43,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginBottom="@dimen/fab_margin"
         app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginEnd="@dimen/fab_margin" />
+        android:layout_marginEnd="@dimen/fab_margin"
+        android:focusable="true" />
 
     <ListView
         android:id="@+id/sightingsList"
