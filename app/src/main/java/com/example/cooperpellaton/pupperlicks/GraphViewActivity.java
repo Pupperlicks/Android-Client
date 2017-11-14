@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.DatePicker;
 import android.widget.Toast;
 
@@ -35,15 +37,18 @@ import com.jjoe64.graphview.series.LineGraphSeries;
 public class GraphViewActivity extends AppCompatActivity
         implements DatePickerDialog.OnDateSetListener {
 
+    // sightings date range selection stuff
+    private DatePickerDialog endDatePickerDialog; // UI
+    private DatePickerDialog startDatePickerDialog; // UI
     private DatePicker startDatePicker;
     private DatePicker endDatePicker;
     private Date startDate;
     private Date endDate;
-
     private GraphView graph;
 
     private Context context;
     private List<RatSighting> sightingsList;
+
 
 
     @Override
@@ -66,21 +71,53 @@ public class GraphViewActivity extends AppCompatActivity
         new GraphViewTask().execute(this); // call AsyncTask
 
         // instantiate graph view
-        graph = findViewById(R.id.graph);
+        graph = (GraphView) findViewById(R.id.graph);
 
         // the "correct" way to set a date object (old constructor was deprecated)
         Calendar cal = Calendar.getInstance(); // create calendar object
 
-        int year = 2015;
-        cal.set(Calendar.YEAR, year); // set to current year
+        cal.set(Calendar.YEAR, 2017); // set to current year
         cal.set(Calendar.MONTH, 0); // set month (starting at Jan = 0)
-        int day = 31;
-        cal.set(Calendar.DAY_OF_MONTH, day); // set day
+        cal.set(Calendar.DAY_OF_MONTH, 31); // set day
 
         endDate = cal.getTime(); // now
 
         cal.add(Calendar.MONTH, -1);
         startDate = cal.getTime();
+    }
+
+    // toolbar items
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_graph, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.actions_graph_datefilter) {
+
+            // get the start date
+            startDatePickerDialog = new DatePickerDialog(GraphViewActivity.this, GraphViewActivity.this, 2015, 0, 1);
+
+            // store the reference to the internal DatePicker so we can determine which one was pressed later
+            startDatePicker = startDatePickerDialog.getDatePicker();
+            startDatePickerDialog.show();
+
+            // display a helpful toast indicating what we need to be selecting
+            Toast.makeText(context, "Select start date", Toast.LENGTH_LONG).show();
+
+            return true; // consume the click event
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -104,10 +141,8 @@ public class GraphViewActivity extends AppCompatActivity
 
 
             // now that we have the start date, get the end date
-            DatePickerDialog endDatePickerDialog = new DatePickerDialog(GraphViewActivity.this,
-                    GraphViewActivity.this, year, 0, 1);
-            // store the reference to the internal DatePicker so we
-            // can determine which one was pressed later
+            endDatePickerDialog = new DatePickerDialog(GraphViewActivity.this, GraphViewActivity.this, 2017, 0, 1);
+            // store the reference to the internal DatePicker so we can determine which one was pressed later
             endDatePickerDialog.setTitle("End Date");
             endDatePicker = endDatePickerDialog.getDatePicker();
             endDatePickerDialog.show();

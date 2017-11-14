@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.DatePicker;
 import android.widget.Toast;
 
@@ -124,6 +126,40 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         } else {
             throw new IllegalArgumentException("Invalid View passed, cannot parse date.");
         }
+    }
+
+    // toolbar items
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_maps, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.actions_maps_datefilter) {
+
+            // get the start date
+            DatePickerDialog startDatePickerDialog = new DatePickerDialog(MapsActivity.this, MapsActivity.this, 2015, 0, 1);
+
+            // store the reference to the internal DatePicker so we can determine which one was pressed later
+            startDatePicker = startDatePickerDialog.getDatePicker();
+            startDatePickerDialog.show();
+
+            // display a helpful toast indicating what we need to be selecting
+            Toast.makeText(context, "Select start date", Toast.LENGTH_LONG).show();
+
+            return true; // consume the click event
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
 
