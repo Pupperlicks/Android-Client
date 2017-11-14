@@ -62,6 +62,10 @@ class DetailsActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * A method that returns a rat sighting
+     * @return A rat sighting with details about it
+     */
     public RatSighting getSighting() {
         return sighting;
     }
