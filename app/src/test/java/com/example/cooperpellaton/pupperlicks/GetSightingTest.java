@@ -1,33 +1,44 @@
 package com.example.cooperpellaton.pupperlicks;
 
 
-import org.junit.Before;
 import org.junit.Test;
 
+
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNull;
+
+
+
+
+
+
 /**
  *
  * To test if DetailsActivity.getSighting() populates a RatSighting.
  * Created by Victoria Joh on 11/13/17.
  */
 
-public class GetSightingTest {
 
-   DetailsActivity activity = new DetailsActivity();
+
+public class GetSightingTest {
+    DetailsActivity activity = new DetailsActivity();
 
 
     RatSighting sighting = new RatSighting("alolo", "11/13/2017", "locationType",
            "incidentZip", "incidentAddress", "city","borough",
            "latitude", "longitude");
 
+    public RatSighting setSighting(RatSighting sighting) {
+        this.sighting = sighting;
+        return sighting;
+    }
+
 
     /**
-     * Test whether a Rat Sighting has been created.
+     * Test whether a Rat Sighting toString has been created from it's values.
      */
     @Test
-    public void sightingIsPopulated() {
+    public void ratSightingToStringTest() {
 
         String testString = "RatSighting{}"
                 + "\n uniqueKey: " + sighting.getUniqueKey()
@@ -45,11 +56,10 @@ public class GetSightingTest {
     }
 
     /**
-     * Test whether the good values are fetched from the Rat Sighting properly.
+     * Test whether good values are fetched from the Rat Sighting properly.
      */
     @Test
     public void properValuesTest() {
-        assertEquals("alolo", sighting.getUniqueKey());
         assertEquals("alolo", sighting.getUniqueKey());
         assertEquals("11/13/2017", sighting.getCreatedDate());
         assertEquals("locationType", sighting.getLocationType());
@@ -60,8 +70,26 @@ public class GetSightingTest {
         assertEquals("longitude", sighting.getLongitude());
     }
 
+    /**
+     * Test whether a Rat Sighting has been created.
+     */
+
+    @Test
+    public void getSightingTest() {
+
+        RatSighting newSighting = setSighting(sighting);
+
+        //RatSighting nullSighting = null;
+
+        if (newSighting == null) {
+            System.out.println("Sighting is NULL");
+        } else {
+            System.out.println("Sighting is valid object");
+        }
+        assertNull(activity.getSighting());
 
 
+    }
 
 
 }
