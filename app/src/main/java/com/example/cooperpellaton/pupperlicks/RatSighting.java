@@ -129,21 +129,22 @@ public class RatSighting implements Serializable {
      * @return true if the key is a properly formed integer, false if it's not
      */
     public static boolean validateKey(RatSighting sighting) {
-        if (sighting == null)
+        if (sighting.getUniqueKey() == null)
             return false;
 
         // verify that unique key is an integer
         Scanner sc = new Scanner(sighting.uniqueKey);
 
-        if(!sc.hasNextInt())
-            return false; // get the first int
+        if(!sc.hasNextInt()) // make sure there's at least one int to grab
+            return false;
 
         int integer = sc.nextInt(); // store the value
 
-        if (sc.hasNext()) { // now check and make sure there's not a second
+        if (sc.hasNext()) { // now check and make sure there's not a second int (or more)
             return false;
         }
 
+        // check integer range, can't be less than 0
         if (integer < 0) {
             return false;
         }

@@ -33,12 +33,20 @@ public class ValidateKeyUnitTest {
         RatSighting sighting = new RatSighting("12345678","","","","","","","","");
         assertTrue(RatSighting.validateKey(sighting));
 
+        // should return false: integer is wrong
+        sighting = new RatSighting("12345678 392922","","","","","","","","");
+        assertFalse(RatSighting.validateKey(sighting));
+
         // should return true: integer is correct
         sighting = new RatSighting("flam","","","","","","","","");
         assertFalse(RatSighting.validateKey(sighting));
 
         // should return false: integer is less than 0
         sighting = new RatSighting("-1","","","","","","","","");
+        assertFalse(RatSighting.validateKey(sighting));
+
+        // should return false: integer string is null
+        sighting = new RatSighting(null,"","","","","","","","");
         assertFalse(RatSighting.validateKey(sighting));
     }
 
