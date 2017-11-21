@@ -2,14 +2,9 @@ package com.example.cooperpellaton.pupperlicks;
 
 
 import org.junit.Test;
-
-
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-
-
-
-
 
 
 /**
@@ -17,7 +12,6 @@ import static org.junit.Assert.assertNull;
  * To test if DetailsActivity.getSighting() populates a RatSighting.
  * Created by Victoria Joh on 11/13/17.
  */
-
 
 
 public class GetSightingTest {
@@ -86,7 +80,7 @@ public class GetSightingTest {
         } else {
             System.out.println("Sighting is valid object");
         }
-        assertNull(activity.getSighting());
+        assertNotNull(activity.getSighting());
 
 
     }
