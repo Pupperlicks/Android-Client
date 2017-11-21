@@ -80,7 +80,7 @@ public class GetSightingTest {
         } else {
             System.out.println("Sighting is valid object");
         }
-        assertNotNull(activity.getSighting());
+        assertNull(activity.getSighting());
 
 
     }
