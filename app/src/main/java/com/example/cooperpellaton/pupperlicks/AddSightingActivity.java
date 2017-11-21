@@ -103,7 +103,7 @@ public class AddSightingActivity extends AppCompatActivity {
 
                     // build rat sighting object and send server add request
 
-                    ServerPortalUtilites.addReport(new RatSighting(
+                    RatSighting newSighting = new RatSighting(
                             editTextUniqueKey.getText().toString(),
                             df.format(c.getTime()), // gets current time and formats it
                             editTextLocationType.getText().toString(),
@@ -112,8 +112,20 @@ public class AddSightingActivity extends AppCompatActivity {
                             editTextCity.getText().toString(),
                             editTextBorough.getText().toString(),
                             editTextLatitude.getText().toString(),
-                            editTextLongitude.getText().toString())
+                            editTextLongitude.getText().toString()
                     );
+
+                    // if sighting validation checks out, ask the server to add the entry
+                    if (RatSighting.validateKey(newSighting)) {
+                        ServerPortalUtilites.addReport(newSighting);
+                    } else {
+                        // construct toast and display it
+                        Toast.makeText(getApplicationContext(),
+                                "Unique key must be an integer.", Toast.LENGTH_SHORT).show();
+                    }
+
+
+
                 } else {
                     // construct toast and display it
                     Toast.makeText(getApplicationContext(),

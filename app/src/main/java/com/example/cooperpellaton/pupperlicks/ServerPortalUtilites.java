@@ -122,7 +122,9 @@ class ServerPortalUtilites {
         params.put("start_date", df.format(startDate));
         params.put("end_date", df.format(endDate));
 
-        Call.Factory client = new OkHttpClient();
+        Call.Factory client = new OkHttpClient.Builder()
+                .retryOnConnectionFailure(true) // hopefully should resolve "end of stream" issues
+                .build();
 
         JSONObject outgoing = new JSONObject(params); // generate JSON object from map entries
 
@@ -134,7 +136,7 @@ class ServerPortalUtilites {
                     .url(HOST + RANGE)
                     .post(body)
                     .addHeader("content-type", "application/json; charset=utf-8")
-                    .addHeader("cache-control", "no-cache")
+//                    .addHeader("cache-control", "no-cache")
                     .build();
 
             // call the server and (hopefully) get a response

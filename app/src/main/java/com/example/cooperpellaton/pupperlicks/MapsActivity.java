@@ -79,7 +79,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         // set context var
         context = getApplicationContext();
 
-        df = new SimpleDateFormat("M/d/yyyy H:mm");
+        df = new SimpleDateFormat("M/d/yyyy");
 
         // start asynchronous task that asks the server for sightings
         new MapSightingsTask().execute(this);

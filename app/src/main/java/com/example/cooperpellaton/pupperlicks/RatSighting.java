@@ -1,6 +1,7 @@
 package com.example.cooperpellaton.pupperlicks;
 
 import java.io.Serializable;
+import java.util.Scanner;
 
 /**
  * Created by Cooper Pellaton on 10/11/2017.
@@ -120,6 +121,34 @@ public class RatSighting implements Serializable {
      */
     public String getLongitude() {
         return longitude;
+    }
+
+    /**
+     * Validates that the unique key stored in the sighting is a properly-formed integer.
+     * @param sighting the RatSighting object which unique key we want to validate
+     * @return true if the key is a properly formed integer, false if it's not
+     */
+    public static boolean validateKey(RatSighting sighting) {
+        if (sighting == null)
+            return false;
+
+        // verify that unique key is an integer
+        Scanner sc = new Scanner(sighting.uniqueKey);
+
+        if(!sc.hasNextInt())
+            return false; // get the first int
+
+        int integer = sc.nextInt(); // store the value
+
+        if (sc.hasNext()) { // now check and make sure there's not a second
+            return false;
+        }
+
+        if (integer < 0) {
+            return false;
+        }
+
+        return true; // if we've gotten this far, the number has passed validation
     }
 
     // basic toString method
