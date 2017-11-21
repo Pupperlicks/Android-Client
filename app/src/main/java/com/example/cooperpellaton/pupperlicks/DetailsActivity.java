@@ -70,3 +70,4 @@ class DetailsActivity extends AppCompatActivity {
         return sighting;
     }
 }
+
