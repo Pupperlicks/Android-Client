@@ -68,22 +68,22 @@ public class GetSightingTest {
      * Test whether a Rat Sighting has been created.
      */
 
-    @Test
-    public void getSightingTest() {
 
-        RatSighting newSighting = setSighting(sighting);
-
-        //RatSighting nullSighting = null;
-
-        if (newSighting == null) {
-            System.out.println("Sighting is NULL");
-        } else {
-            System.out.println("Sighting is valid object");
-        }
-        assertNull(activity.getSighting());
-
-
-    }
+//    @Test
+//    public void getSightingTest() {
+//
+//        RatSighting newSighting = setSighting(sighting);
+//
+//        //RatSighting nullSighting = null;
+//
+//        if (newSighting == null) {
+//            System.out.println("Sighting is NULL");
+//        } else {
+//            System.out.println("Sighting is valid object");
+//        }
+//        assertNull(activity.getSighting());
+//
+//    }
 
 
 }
